@@ -1,8 +1,0 @@
-{
-    "similarity_threshold": 0.1,
-    "dist_type": "eu",
-    "loi": [
-        1,
-        3
-    ]
-}

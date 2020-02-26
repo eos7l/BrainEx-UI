@@ -141,9 +141,12 @@ def saveFilePro():
     global brainexDB
 
     if request.method == 'POST':
-        savePath = "../../Saved_Preprocessed"
+        os.chdir(os.path.dirname(os.path.abspath(__file__)))
+        savePath = "../../Saved_Preprocessed/most_recent_data"
         try:
             brainexDB.save(savePath)
+            shutil.make_archive(savePath, "zip", "../../Saved_Preprocessed")
+            shutil.rmtree(savePath)
             return "Saved to the Saved_Preprocessed folder."
         except Exception as e:
             return (str(e), 400)
