@@ -10,6 +10,9 @@ from flask_cors import CORS
 import pandas as pd
 import numpy as np
 
+import findspark
+
+UPLOAD_FOLDER = "./uploads"
 UPLOAD_FOLDER_RAW = "./uploads/raw"
 UPLOAD_FOLDER_PRO = "./uploads/preprocessed"
 
@@ -112,6 +115,7 @@ def setFilePro():
 
     if request.method == 'POST':
         uploadPath = os.path.join(application.config['UPLOAD_FOLDER_PRO'], request.form['set_data'])
+        num_worker = request.json['num_workers']
         use_spark_int = request.form['spark_val']
         if use_spark_int == "1":
             use_spark = True
@@ -140,6 +144,15 @@ def saveFilePro():
         try:
             brainexDB.save(savePath)
             return "Saved to your desired location."
+        except Exception as e:
+            return (str(e), 400)
+
+@application.route('/checkSpark', methods=['GET', 'POST'])
+def checkSpark():
+    if request.method == 'POST':
+        try:
+            findspark.find()
+            return "Spark is properly installed"
         except Exception as e:
             return (str(e), 400)
 
