@@ -4,13 +4,14 @@ import genex.database.genexengine as gxdb
 from genex.utils.gxe_utils import from_csv, from_db
 from genex.classes.Sequence import Sequence
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 
 import pandas as pd
 import numpy as np
 
 import findspark
+import shutil
 
 UPLOAD_FOLDER = "./uploads"
 UPLOAD_FOLDER_RAW = "./uploads/raw"
@@ -35,35 +36,42 @@ def is_csv(filename):
 @application.route('/rawNames', methods=['GET', 'POST'])
 def getRawNames():
         if request.method == 'POST':
-            files = os.listdir(application.config['UPLOAD_FOLDER_RAW'])
-            json = {
-                    "Message" : "Returning file names",
-                    "Files": files
-            }
-            return jsonify(json)
+            output_name = os.path.join(application.config['UPLOAD_FOLDER_RAW'], "rawFiles")
+            shutil.make_archive(output_name, "zip", application.config['UPLOAD_FOLDER_RAW'])
+            return send_file(output_name, mimetype="zip", attachment_filename="rawFiles")
+
+@application.route('/proNames', methods=['GET', 'POST'])
+def getProNames():
+        if request.method == 'POST':
+            output_name = os.path.join(application.config['UPLOAD_FOLDER_PRO'], "proFiles")
+            shutil.make_archive(output_name, "zip", application.config['UPLOAD_FOLDER_PRO'])
+            return send_file(output_name, mimetype="zip", attachment_filename="proFiles")
+
+@application.route('/deleteZips', methods=['GET', 'POST'])
+def delZips():
+    if request.method == 'POST':
+        if os.path.exists(os.path.join(application.config['UPLOAD_FOLDER_RAW'], "rawFiles")):
+            os.remove(os.path.join(application.config['UPLOAD_FOLDER_RAW'], "rawFiles"))
+        if os.path.exists(os.path.join(application.config['UPLOAD_FOLDER_PRO'], "proFiles")):
+            os.remove(os.path.join(application.config['UPLOAD_FOLDER_PRO'], "proFiles"))
 
 @application.route('/getCSV', methods=['GET', 'POST'])
 def getStoreCSV():
     global numFeatures
 
     if request.method == 'POST':
-        if 'uploaded_data' not in request.files:
-            return ("File not found.", 400)
-        csv = request.files['uploaded_data']
-        if csv.filename == '':
-            return("File not found", 400)
-        if csv and is_csv(csv.filename):
-            toSave = os.path.join(application.config['UPLOAD_FOLDER_RAW'], csv.filename)
-            csv.save(toSave) # Secure filename?? See tutorial
-            csvPD = pd.read_csv(toSave)
-            out = csvPD.to_json()
-            returnDict = {
-                "message": "File has been uploaded.",
-                "fileContents": out
-            }
-            return jsonify(returnDict)
-        else:
-            return("Invalid file.  Please upload a CSV", 400)
+        for i in range(len(request.files)):
+            if 'uploaded_data' + str(i) not in request.files:
+                return ("File not found.", 400)
+            csv = request.files['uploaded_data' + str(i)]
+            if csv.filename == '':
+                return("File not found", 400)
+            if csv and is_csv(csv.filename):
+                toSave = os.path.join(application.config['UPLOAD_FOLDER_RAW'], csv.filename)
+                csv.save(toSave) # Secure filename?? See tutorial
+            else:
+                return("Invalid file.  Please upload a CSV", 400)
+        return "File has been uploaded."
 
 @application.route('/getDB', methods=['GET', 'POST'])
 def getStoreDB():
@@ -93,9 +101,12 @@ def setFileRaw():
             if 'unnamed' in elem:
                 notFeature = notFeature + 1;
         numFeatures = len(dataframe.columns) - notFeature
+        csvPD = pd.read_csv(uploadPath)
+        out = csvPD.to_json()
         returnDict = {
             "message": "File has been set.",
-            "maxLength": str(notFeature)
+            "maxLength": str(notFeature),
+            "fileContents": out
         }
         return jsonify(returnDict)
 
