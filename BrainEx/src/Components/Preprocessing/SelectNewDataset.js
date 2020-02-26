@@ -7,6 +7,9 @@ import FormData from "form-data";
 import $ from "jquery";
 import axios from 'axios';
 import {build_options, root} from "../../data/default_values";
+import JSZip from "jszip";
+import JSZipUtils from "jszip-utils";
+import fs from "fs";
 
 class SelectNewDataset extends Component {
 
@@ -29,7 +32,20 @@ class SelectNewDataset extends Component {
     componentDidMount() {
       axios.post('http://localhost:5000/rawNames')
           .then((response) => {
-              console.log(response);
+            /*  fs.readFile(filePath, function(err, data) {
+                  if (!err) {
+                      var zip = new JSZip();
+                      zip.loadAsync(data).then(function(contents) {
+                          Object.keys(contents.files).forEach(function(filename) {
+                              zip.file(filename).async('nodebuffer').then(function(content) {
+                                  var dest = path + filename;
+                                  fs.writeFileSync(dest, content);
+                              });
+                          });
+                      });
+                  }
+              });*/
+              // console.log(response);
               if (response.status === 200) {
                   this.setState({
                       all_files: response.data.Files
