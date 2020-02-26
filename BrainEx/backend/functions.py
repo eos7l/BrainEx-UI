@@ -141,10 +141,10 @@ def saveFilePro():
     global brainexDB
 
     if request.method == 'POST':
-        savePath = request.json['path']
+        savePath = "../../Saved_Preprocessed"
         try:
             brainexDB.save(savePath)
-            return "Saved to your desired location."
+            return "Saved to the Saved_Preprocessed folder."
         except Exception as e:
             return (str(e), 400)
 
