@@ -6,6 +6,10 @@ import { Button, Link, Typography, ButtonGroup } from '@material-ui/core';
 import FormData from 'form-data';
 import {select_new_dataset} from "../../data/default_values";
 import axios from 'axios'
+import JSZip from "jszip";
+import JSZipUtils from "jszip-utils";
+import fs from "fs";
+import { test_zips } from "../../data/test_zips";
 
 class Home extends Component {
 
@@ -13,7 +17,7 @@ class Home extends Component {
         super(props);
         this.state = {
             upload_files: null,
-            all_files: []
+            all_files: test_zips
         };
         this.onChangeHandler = this.onChangeHandler.bind(this);
         this.onClickHandler = this.onClickHandler.bind(this);
@@ -22,23 +26,30 @@ class Home extends Component {
 
     // pull files from database here. this function will be called after render()
     componentDidMount() {
-      axios.post('http://localhost:5000/proNames')
-          .then((response) => {
-              console.log(response);
-              if (response.status === 200) {
-                  this.setState({
-                      all_files: response.data.Files
-                  }, () => {
-                      // console.log(this.state.current_file);
-                      console.log(response.data.Files);
-                  });
-              } else {
-                  console.log("File selection failed.");
-              }
-          })
-          .catch((error) => {
-              console.log(error);
-          });
+        axios.post('http://localhost:5000/proNames')
+            .then((response) => {
+                if (response.status === 200) {
+                    let zip_file = response.data;
+                    JSZip.loadAsync(zip_file).then((contents) => {
+                        // console.log(contents.files);
+                        let files = [];
+                        for(let i in contents.files) {
+                            files.push(contents.files[i]);
+                        }
+                        this.setState({
+                            all_files: this.state.all_files.concat(files)
+                        }, () => {
+                            console.log("files pulled to front end");
+                            console.log(this.state.all_files);
+                        });
+                    });
+                } else {
+                    console.log("File read in failed.");
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
 
     // use this function to do any handling once a file in the list is selected
@@ -61,8 +72,8 @@ class Home extends Component {
         // convert FileList to an array of files
         const new_files = [...e.target.files];
         this.setState({
-                upload_files: new_files
-            }, () => {
+            upload_files: new_files
+        }, () => {
             console.log("files added to state successfully:");
             console.log(this.state.upload_files) // cannot print text and object in the same console.log
         }); // print state for debugging
