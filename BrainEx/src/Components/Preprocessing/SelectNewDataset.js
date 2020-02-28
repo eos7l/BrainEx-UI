@@ -39,7 +39,7 @@ class SelectNewDataset extends Component {
             all_files: [], /* for storing files displayed in file-list */
             curr_loi_max: null,
             data: null,
-            page: 1,
+            page: 0,
             rowsPerPage: 10,
         };
         /* binding all handlers to the class */
@@ -80,14 +80,16 @@ class SelectNewDataset extends Component {
     };
 
     handleChangePage = (e, newPage) => {
-        this.setState({page: newPage})
+        this.setState({
+            page: newPage
+        })
     };
 
     handleChangeRowsPerPage = e => {
         this.setState(
             {
-                pagePerRow: +e.target.value,
-                page: 1
+                rowsPerPage: +e.target.value,
+                page: 0
             })
     };
 
@@ -119,7 +121,7 @@ class SelectNewDataset extends Component {
                         data: json2array(JSON.parse(response.data.data))
                         // todo @Kyra i need the file name returned here so i can set it as current_file in the response
                     }, () => {
-                        // console.log(this.state.current_file);
+                        console.log(this.state.data);
                     });
                 } else {
                     console.log("File selection failed.");
@@ -221,18 +223,20 @@ class SelectNewDataset extends Component {
                                         </Typography>
                                     ) : (
                                         (this.state.data !== null) ? (
-                                            <Container>
-                                                <Paper>
-                                                    <TableContainer className='home-content'>
-                                                        <Table stickyHeader aria-label="sticky table"
-                                                               className="csv-content" size='small'>
-                                                            {/*{Object.keys(this.state.data).map((header, i) => {*/}
-                                                            {/*    // loop through each header and fill in the table cell*/}
-                                                            <Fragment>
+                                            <Fragment>
+                                                <Typography>File being previewed: {this.state.current_file}</Typography>
+                                                <Container>
+                                                    <Paper>
+                                                        <TableContainer className='home-content'>
+                                                            <Table stickyHeader aria-label="sticky table"
+                                                                   className="csv-content" size='small'>
+                                                                {/*{Object.keys(this.state.data).map((header, i) => {*/}
+                                                                {/*    // loop through each header and fill in the table cell*/}
+                                                                {/*<Fragment>*/}
                                                                 <TableHead>
                                                                     <TableRow>
                                                                         {Object.keys(this.state.data[0]).map((col, i) => (
-                                                                            <TableCell key={col}>
+                                                                            <TableCell key={col + i}>
                                                                                 {col}
                                                                             </TableCell>
                                                                         ))}
@@ -241,14 +245,14 @@ class SelectNewDataset extends Component {
                                                                 <TableBody>
                                                                     {/*{console.log(json2array(this.state.data))}*/}
                                                                     {this.state.data.slice(
-                                                                        this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage * this.state.rowsPerPage)
+                                                                        this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage)
                                                                         .map((row, i) => {
                                                                             return (
                                                                                 <TableRow hover tabIndex={-1}
-                                                                                          key={row[0]}>
+                                                                                          key={row + i}>
                                                                                     {Object.keys(row).map((col, i) => {
                                                                                         return (
-                                                                                            <TableCell key={col + i}>
+                                                                                            <TableCell>
                                                                                                 {row[col]}
                                                                                                 {/*{console.log(  row[col[0]], 'check fill value'*/}
                                                                                                 {/*)}*/}
@@ -257,23 +261,24 @@ class SelectNewDataset extends Component {
                                                                                     })}
                                                                                 </TableRow>
                                                                             );
-                                                                    })}
+                                                                        })}
                                                                 </TableBody>
-                                                            </Fragment>
+                                                                {/*</Fragment>*/}
 
-                                                        </Table>
-                                                    </TableContainer>
-                                                    <TablePagination
-                                                        rowsPerPageOptions={[10, 25, 100]}
-                                                        component="div"
-                                                        count={this.state.data.length}
-                                                        rowsPerPage={this.state.rowsPerPage}
-                                                        page={this.state.page}
-                                                        onChangePage={this.handleChangePage}
-                                                        onChangeRowsPerPage={this.handleChangeRowsPerPage}
-                                                    />
-                                                </Paper>
-                                            </Container>
+                                                            </Table>
+                                                        </TableContainer>
+                                                        <TablePagination
+                                                            rowsPerPageOptions={[10]}
+                                                            component="div"
+                                                            count={this.state.data.length}
+                                                            rowsPerPage={this.state.rowsPerPage}
+                                                            page={this.state.page}
+                                                            onChangePage={this.handleChangePage}
+                                                            onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                                                        />
+                                                    </Paper>
+                                                </Container>
+                                            </Fragment>
                                         ) : (
                                             <Typography variant="h2" color="primary" gutterBottom
                                                         className='csv-viewer'>

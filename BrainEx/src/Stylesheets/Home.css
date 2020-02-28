@@ -147,7 +147,7 @@
     color: red;
 }
 
-.home-content table {
+/*.home-content table {
 	display: table;
 }
 .home-content table tr {
@@ -155,13 +155,13 @@
 }
 .home-content table tr td {
 	display: block;
-}
+}*/
 
 .right .home-content {
 
 }
 .csv-viewer {
-    margin-top: 5%;
+    margin-top: -5%;
     max-width: 935px;
     margin-bottom: 5%;
     margin-left: 3%;
