@@ -14,6 +14,10 @@
     font-size: 110% !important;
 }
 
+.table-container {
+    max-height: 440px;
+}
+
 .row {
     height: 100%;
     width: 100%; /*prevents wonky scroll bars*/

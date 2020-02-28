@@ -1,14 +1,22 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 // import {preprocessed_files, rawdata_files} from "../../data/dummy_data";
 import '../../Stylesheets/Home.css';
-import { Button, Link, Typography, ButtonGroup } from '@material-ui/core';
-import { Link as RouterLink } from "react-router-dom";
+import {Button, Link, Typography, ButtonGroup} from '@material-ui/core';
+import {Link as RouterLink} from "react-router-dom";
 import FormData from "form-data";
 import $ from "jquery";
 import axios from 'axios';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TablePagination from '@material-ui/core/TablePagination';
+import TableRow from '@material-ui/core/TableRow';
 import {build_options, root} from "../../data/default_values";
 import ViewerForCSV from "./ViewerForCSV";
 import {file_names} from '../../data/file_names'
+import Paper from "@material-ui/core/Paper";
 
 class SelectNewDataset extends Component {
 
@@ -19,13 +27,17 @@ class SelectNewDataset extends Component {
             upload_files: null, /* for storing the file(s) chosen to be uploaded */
             all_files: [], /* for storing files displayed in file-list */
             curr_loi_max: null,
-            data: null
+            data: null,
+            page: 0,
+            rowsPerPage: 10,
         };
         /* binding all handlers to the class */
         this.onChangeHandler = this.onChangeHandler.bind(this);
         this.onClickHandler = this.onClickHandler.bind(this);
         this.fileHandler = this.fileHandler.bind(this);
         this.isFileSelected = this.isFileSelected.bind(this);
+        this.handleChangePage = this.handleChangePage.bind(this);
+        this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
     }
 
     /*pull files from database here. this function is called after render() so all elements will be in place*/
@@ -54,6 +66,18 @@ class SelectNewDataset extends Component {
         if (this.state.current_file === null) {
             e.preventDefault();
         }
+    };
+
+    handleChangePage = (e, newPage) => {
+        this.setState({page: newPage})
+    };
+
+    handleChangeRowsPerPage = e => {
+        this.setState(
+            {
+                pagePerRow: +e.target.value,
+                page: 0
+            })
     };
 
     /* file select handler. triggered once user clicks on a file in the file-list */
@@ -148,17 +172,19 @@ class SelectNewDataset extends Component {
     };
 
     render() {
-        return(
+        return (
             <div className="full-height">
                 <div className="row no-gutters">
                     <div className="col col-3 no-gutters">
                         <div className="left d-flex justify-content-center align-items-center">
                             <div className="home-content">
                                 {/*list of files from the server (all_files, current_file)*/}
-                                <Typography className="directions" variant="h4">Select a dataset to preview here</Typography>
+                                <Typography className="directions" variant="h4">Select a dataset to preview
+                                    here</Typography>
                                 <ButtonGroup className="file-list" orientation="vertical" color="primary">
-                                    { this.state.all_files.map((file, index) => (
-                                        <Button id={index} className="btn-file" variant="contained" key={index} onClick={this.fileHandler}>{file}</Button>
+                                    {this.state.all_files.map((file, index) => (
+                                        <Button id={index} className="btn-file" variant="contained" key={index}
+                                                onClick={this.fileHandler}>{file}</Button>
                                     ))}
                                 </ButtonGroup>
                                 {/*adding a new file (upload_files)*/}
@@ -184,21 +210,38 @@ class SelectNewDataset extends Component {
                                         </Typography>
                                     ) : (
                                         (this.state.data !== null) ? (
-                                            <table className="csv-content">
-                                                {Object.keys(this.state.data).map((header, i) => {
-                                                    // loop through each header and fill in the table cell
-                                                    return (
-                                                        <tr>
-                                                            <thead className={header + i}>{header}</thead>
-                                                            {Object.keys(this.state.data[header]).map((cell_key, i) => {
-                                                                return(
-                                                                    <td className={header + i}>{this.state.data[header][cell_key]}</td>
-                                                                );
-                                                            })}
-                                                        </tr>
-                                                    );
-                                                })}
-                                            </table>
+                                            <Paper>
+                                                <TableContainer className='table-container'>
+                                                    <Table stickyHeader aria-label="sticky table"
+                                                           className="csv-content">
+                                                        {Object.keys(this.state.data).map((header, i) => {
+                                                            // loop through each header and fill in the table cell
+                                                            return (
+                                                                <TableRow>
+                                                                    <TableHead
+                                                                        className={header + i}>{header}</TableHead>
+                                                                    {Object.keys(this.state.data[header]).map((cell_key, i) => {
+                                                                        return (
+                                                                            <TableCell
+                                                                                className={header + i}>{this.state.data[header][cell_key]}</TableCell>
+                                                                        );
+                                                                    })}
+                                                                </TableRow>
+                                                            );
+                                                        })}
+                                                    </Table>
+                                                </TableContainer>
+                                                <TablePagination
+                                                    rowsPerPageOptions={[10, 25, 100]}
+                                                    component="div"
+                                                    count={this.state.length}
+                                                    rowsPerPage={this.state.rowsPerPage}
+                                                    page={this.state.page}
+                                                    onChangePage={this.handleChangePage}
+                                                    onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                                                />
+                                            </Paper>
+
                                         ) : (
                                             <Typography variant="h2" color="primary" gutterBottom>
                                                 No Data
