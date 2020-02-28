@@ -18,6 +18,17 @@ import ViewerForCSV from "./ViewerForCSV";
 import {file_names} from '../../data/file_names'
 import Paper from "@material-ui/core/Paper";
 
+
+function json2array(json) {
+    var result = [];
+    var keys = Object.keys(json);
+    keys.forEach(function (key) {
+        result.push(json[key]);
+    });
+    return result;
+}
+
+
 class SelectNewDataset extends Component {
 
     constructor(props) {
@@ -28,7 +39,7 @@ class SelectNewDataset extends Component {
             all_files: [], /* for storing files displayed in file-list */
             curr_loi_max: null,
             data: null,
-            page: 0,
+            page: 1,
             rowsPerPage: 10,
         };
         /* binding all handlers to the class */
@@ -76,7 +87,7 @@ class SelectNewDataset extends Component {
         this.setState(
             {
                 pagePerRow: +e.target.value,
-                page: 0
+                page: 1
             })
     };
 
@@ -102,16 +113,13 @@ class SelectNewDataset extends Component {
         file_form.append("set_data", curr_file);
         axios.post('http://localhost:5000/setFileRaw', file_form)
             .then((response) => {
-                console.log(response, 'check response');
                 if (response.status === 200) {
                     this.setState({
                         curr_loi_max: response.data.maxLength,
-                        data: JSON.parse(response.data.data)
+                        data: json2array(JSON.parse(response.data.data))
                         // todo @Kyra i need the file name returned here so i can set it as current_file in the response
                     }, () => {
                         // console.log(this.state.current_file);
-                        console.log(response.data.message, 'dataMsg');
-                        console.log(this.state.data, 'check if Data is arranged by row');
                     });
                 } else {
                     console.log("File selection failed.");
@@ -172,7 +180,9 @@ class SelectNewDataset extends Component {
             });
     };
 
+
     render() {
+
         return (
             <div className="full-height">
                 <div className="row no-gutters">
@@ -222,26 +232,31 @@ class SelectNewDataset extends Component {
                                                                 <TableHead>
                                                                     <TableRow>
                                                                         {Object.keys(this.state.data[0]).map((col, i) => (
-                                                                            <TableCell key={col[i]}>
+                                                                            <TableCell key={col}>
+                                                                                {col}
                                                                             </TableCell>
                                                                         ))}
                                                                     </TableRow>
                                                                 </TableHead>
                                                                 <TableBody>
-                                                                    {this.state.data.slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage * this.state.rowsPerPage).map((row, rowInd) => {
-                                                                        return (
-                                                                            <TableRow hover role='checkbox'
-                                                                                      tabIndex={-1} key={row[rowInd]}>
-                                                                                {
-                                                                                    this.state.data[0].map((col, i) => {
-                                                                                        // const cellVal=this.state.data[col[i]];
+                                                                    {/*{console.log(json2array(this.state.data))}*/}
+                                                                    {this.state.data.slice(
+                                                                        this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage * this.state.rowsPerPage)
+                                                                        .map((row, i) => {
+                                                                            return (
+                                                                                <TableRow hover tabIndex={-1}
+                                                                                          key={row[0]}>
+                                                                                    {Object.keys(row).map((col, i) => {
                                                                                         return (
-                                                                                            <TableCell key={col[i]}>
+                                                                                            <TableCell key={col + i}>
+                                                                                                {row[col]}
+                                                                                                {/*{console.log(  row[col[0]], 'check fill value'*/}
+                                                                                                {/*)}*/}
                                                                                             </TableCell>
                                                                                         )
                                                                                     })}
-                                                                            </TableRow>
-                                                                        )
+                                                                                </TableRow>
+                                                                            );
                                                                     })}
                                                                 </TableBody>
                                                             </Fragment>
