@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 // import {preprocessed_files, rawdata_files} from "../../data/dummy_data";
 import '../../Stylesheets/Home.css';
 import {Button, Link, Typography, ButtonGroup, Container} from '@material-ui/core';
@@ -102,7 +102,7 @@ class SelectNewDataset extends Component {
         file_form.append("set_data", curr_file);
         axios.post('http://localhost:5000/setFileRaw', file_form)
             .then((response) => {
-                console.log(response);
+                console.log(response, 'check response');
                 if (response.status === 200) {
                     this.setState({
                         curr_loi_max: response.data.maxLength,
@@ -110,7 +110,8 @@ class SelectNewDataset extends Component {
                         // todo @Kyra i need the file name returned here so i can set it as current_file in the response
                     }, () => {
                         // console.log(this.state.current_file);
-                        console.log(response.data.message);
+                        console.log(response.data.message, 'dataMsg');
+                        console.log(this.state.data, 'check if Data is arranged by row');
                     });
                 } else {
                     console.log("File selection failed.");
@@ -215,21 +216,36 @@ class SelectNewDataset extends Component {
                                                     <TableContainer className='home-content'>
                                                         <Table stickyHeader aria-label="sticky table"
                                                                className="csv-content" size='small'>
-                                                            {Object.keys(this.state.data).map((header, i) => {
-                                                                // loop through each header and fill in the table cell
-                                                                return (
+                                                            {/*{Object.keys(this.state.data).map((header, i) => {*/}
+                                                            {/*    // loop through each header and fill in the table cell*/}
+                                                            <Fragment>
+                                                                <TableHead>
                                                                     <TableRow>
-                                                                        <TableHead
-                                                                            className={header + i}>{header}</TableHead>
-                                                                        {Object.keys(this.state.data[header]).map((cell_key, i) => {
-                                                                            return (
-                                                                                <TableCell
-                                                                                    className={header + i}>{this.state.data[header][cell_key]}</TableCell>
-                                                                            );
-                                                                        })}
+                                                                        {Object.keys(this.state.data[0]).map((col, i) => (
+                                                                            <TableCell key={col[i]}>
+                                                                            </TableCell>
+                                                                        ))}
                                                                     </TableRow>
-                                                                );
-                                                            })}
+                                                                </TableHead>
+                                                                <TableBody>
+                                                                    {this.state.data.slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage * this.state.rowsPerPage).map((row, rowInd) => {
+                                                                        return (
+                                                                            <TableRow hover role='checkbox'
+                                                                                      tabIndex={-1} key={row[rowInd]}>
+                                                                                {
+                                                                                    this.state.data[0].map((col, i) => {
+                                                                                        // const cellVal=this.state.data[col[i]];
+                                                                                        return (
+                                                                                            <TableCell key={col[i]}>
+                                                                                            </TableCell>
+                                                                                        )
+                                                                                    })}
+                                                                            </TableRow>
+                                                                        )
+                                                                    })}
+                                                                </TableBody>
+                                                            </Fragment>
+
                                                         </Table>
                                                     </TableContainer>
                                                     <TablePagination

@@ -150,7 +150,7 @@ export default class DataTable extends Component {
         return (
             <React.Fragment>
                 <Title>Ranked Matching Sequences</Title>
-                <Table size="small">
+                <Table size="small" className='table-null-content'>
                     <TableHead>
                         <TableRow>
                             <TableCell>

@@ -65,3 +65,4 @@ genex/utils/ts_utils.py
 genex/utils/utils.py
 genex/visualize.py
 /BrainEx/Genex/
+/BrainEx/backend/__pycache__/functions.cpython-37.pyc
