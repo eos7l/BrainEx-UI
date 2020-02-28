@@ -147,7 +147,6 @@ export default class DataTable extends Component {
                                           checkedIcon={<CheckBoxIcon style={{ fontSize: 20 }} />}
                                           onChange={this.selectAll}/>
                             </TableCell>
-                            {/*<TableCell>Color</TableCell>*/}
                             <TableCell>Rank</TableCell>
                             <TableCell>Sequence ID</TableCell>
                             <TableCell>Start Time</TableCell>
