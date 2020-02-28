@@ -158,7 +158,12 @@
 
 }
 .csv-viewer {
-
+    margin-top: 5%;
+    max-width: 935px;
+    margin-bottom: 5%;
+    margin-left: 3%;
+    margin-right: 2%;
+    max-height: inherit;
 }
 
 .csv-content {

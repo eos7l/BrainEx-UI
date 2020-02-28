@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 // import {preprocessed_files, rawdata_files} from "../../data/dummy_data";
 import '../../Stylesheets/Home.css';
-import {Button, Link, Typography, ButtonGroup} from '@material-ui/core';
+import {Button, Link, Typography, ButtonGroup, Container} from '@material-ui/core';
 import {Link as RouterLink} from "react-router-dom";
 import FormData from "form-data";
 import $ from "jquery";
@@ -203,47 +203,49 @@ class SelectNewDataset extends Component {
                     <div className="col no-gutters">
                         <div className="right d-flex justify-content-center align-items-center">
                             <div className="home-content">
-                                <div className="csv-viewer">
+                                <div className="csv-viewer ">
                                     {(this.state.current_file === null) ? (
                                         <Typography className="directions" variant="h2" color="primary" gutterBottom>
                                             Please upload and/or choose a file on the left to proceed
                                         </Typography>
                                     ) : (
                                         (this.state.data !== null) ? (
-                                            <Paper>
-                                                <TableContainer className='table-container'>
-                                                    <Table stickyHeader aria-label="sticky table"
-                                                           className="csv-content">
-                                                        {Object.keys(this.state.data).map((header, i) => {
-                                                            // loop through each header and fill in the table cell
-                                                            return (
-                                                                <TableRow>
-                                                                    <TableHead
-                                                                        className={header + i}>{header}</TableHead>
-                                                                    {Object.keys(this.state.data[header]).map((cell_key, i) => {
-                                                                        return (
-                                                                            <TableCell
-                                                                                className={header + i}>{this.state.data[header][cell_key]}</TableCell>
-                                                                        );
-                                                                    })}
-                                                                </TableRow>
-                                                            );
-                                                        })}
-                                                    </Table>
-                                                </TableContainer>
-                                                <TablePagination
-                                                    rowsPerPageOptions={[10, 25, 100]}
-                                                    component="div"
-                                                    count={this.state.length}
-                                                    rowsPerPage={this.state.rowsPerPage}
-                                                    page={this.state.page}
-                                                    onChangePage={this.handleChangePage}
-                                                    onChangeRowsPerPage={this.handleChangeRowsPerPage}
-                                                />
-                                            </Paper>
-
+                                            <Container>
+                                                <Paper>
+                                                    <TableContainer className='home-content'>
+                                                        <Table stickyHeader aria-label="sticky table"
+                                                               className="csv-content" size='small'>
+                                                            {Object.keys(this.state.data).map((header, i) => {
+                                                                // loop through each header and fill in the table cell
+                                                                return (
+                                                                    <TableRow>
+                                                                        <TableHead
+                                                                            className={header + i}>{header}</TableHead>
+                                                                        {Object.keys(this.state.data[header]).map((cell_key, i) => {
+                                                                            return (
+                                                                                <TableCell
+                                                                                    className={header + i}>{this.state.data[header][cell_key]}</TableCell>
+                                                                            );
+                                                                        })}
+                                                                    </TableRow>
+                                                                );
+                                                            })}
+                                                        </Table>
+                                                    </TableContainer>
+                                                    <TablePagination
+                                                        rowsPerPageOptions={[10, 25, 100]}
+                                                        component="div"
+                                                        count={this.state.data.length}
+                                                        rowsPerPage={this.state.rowsPerPage}
+                                                        page={this.state.page}
+                                                        onChangePage={this.handleChangePage}
+                                                        onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                                                    />
+                                                </Paper>
+                                            </Container>
                                         ) : (
-                                            <Typography variant="h2" color="primary" gutterBottom>
+                                            <Typography variant="h2" color="primary" gutterBottom
+                                                        className='csv-viewer'>
                                                 No Data
                                             </Typography>
                                         )
