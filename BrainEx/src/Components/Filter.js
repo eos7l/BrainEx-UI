@@ -8,6 +8,7 @@ import { makeStyles, Button, ButtonGroup, FormControl,
     FormGroup, FormControlLabel, Checkbox, Typography,
     Slider, Input, Grid, InputAdornment, TextField } from "@material-ui/core";
 import axios from 'axios';
+import {default_matches, default_overlap, excludeSameID} from "../data/default_values";
 
 /*function preventDefault(event) {
     event.preventDefault();
@@ -41,11 +42,11 @@ export default function Filter(props) {
     // const MIN = props.loi_min;
     // const MAX = props.loi_max;
     //number of matches
-    const [numMatches, setNumMatches] = useState(5);
+    const [numMatches, setNumMatches] = useState(default_matches);
     //overlap of sequences
-    const [overlapVal, setOverlapVal] = useState(40);
+    const [overlapVal, setOverlapVal] = useState(default_overlap);
     //exclude same id
-    const [excludeID, setExcludeID] = useState(true);
+    const [excludeID, setExcludeID] = useState(excludeSameID);
     // query results
     const [queryResults, setQueryResults] = useState(null);
 
@@ -128,6 +129,7 @@ export default function Filter(props) {
         axios.post('http://localhost:5000/query', form)
         .then(function (response) {
           console.log(response.data['message']);
+          console.log(response.data);
           setQueryResults(JSON.parse(response.data['resultJSON']));
         })
         .catch(function (error) {
@@ -193,7 +195,7 @@ export default function Filter(props) {
                                 onChange={handleMatchChange}
                                 id="outlined-number"
                                 label="Number of best sequence matches"
-                                placeholder="5"
+                                placeholder={default_matches}
                                 // multiline
                                 size="small"
                                 variant="filled"
@@ -211,7 +213,7 @@ export default function Filter(props) {
                                 label="Overlap of sequence allowed"
                                 id="overlap-percentage"
                                 size="small"
-                                placeholder="40"
+                                placeholder={default_overlap}
                                 className={clsx(classes.margin, classes.textField)}
                                 InputProps={{
                                     startAdornment: <InputAdornment position="start">%</InputAdornment>,
@@ -224,7 +226,8 @@ export default function Filter(props) {
                                 {/* EXCLUDE SAME ID FIELD */}
                             <FormControlLabel
                                 value="checkBox"
-                                control={<Checkbox color="primary" checked={excludeID} onChange={handleExcludeIDChange}/>}
+                                control={<Checkbox color="primary" checked={excludeID} size='medium'
+                                                   onChange={handleExcludeIDChange}/>}
                                 label="Exclude subsequence matches from current sequence"
                                 labelPlacement="end"
                             />

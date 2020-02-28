@@ -3,13 +3,15 @@ import {Link as RouterLink} from "react-router-dom";
 import "../../Stylesheets/BuildProgressMenu.css";
 import {
     Link, ButtonGroup, Typography, LinearProgress,
-    Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle
+    Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
 } from '@material-ui/core';
 import $ from "jquery";
 import {query_page, data_exp, build_options, root} from "../../data/default_values";
 import Button from "@material-ui/core/Button";
 import {homepage} from "d3/dist/package";
 import axios from "axios";
+import { store } from 'react-notifications-component';
+import 'react-notifications-component/dist/theme.css';
 
 class BuildProgressMenu extends Component {
     constructor(props) {
@@ -56,7 +58,7 @@ class BuildProgressMenu extends Component {
         } else {
             console.log("Invalid modal mode.");
         }
-        return (e) => {
+        return () => {
             this.setState({
                 open: true,
                 message: message,
@@ -82,9 +84,23 @@ class BuildProgressMenu extends Component {
         console.log("preprocessing \"cancelled\".");
         if (mode === "cancel") {
             // return to previous screen
+            axios.post('http://localhost:5000/restart')
+                .then((response) => {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
             this.props.history.push(build_options);
         } else if (mode === "home") {
             // return to home
+            axios.post('http://localhost:5000/restart')
+                .then((response) => {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
             this.props.history.push(root);
         } else {
             console.log("invalid modal mode.")
@@ -92,7 +108,31 @@ class BuildProgressMenu extends Component {
     };
 
     saveDataset = (e) => {
-      axios.post('http://localhost:5000/saveFilePro')
+        axios.post('http://localhost:5000/saveFilePro')
+            .then((response) => {
+                console.log(response);
+                store.addNotification({
+                    title: "Download Successful",
+                    message: response.data,
+                    type: "success",
+                    insert: "top",
+                    container: "bottom-center",
+                    animationIn: ["animated", "fadeIn"],
+                    animationOut: ["animated", "fadeOut"],
+                    dismiss: {
+                        duration: 10000,
+                        pauseOnHover: true,
+                        onScreen: true
+                    }
+                })
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    };
+
+    goBack = (e) => {
+      axios.post('http://localhost:5000/restart')
           .then((response) => {
               console.log(response);
           })
@@ -135,7 +175,7 @@ class BuildProgressMenu extends Component {
                             </Link>
                             <Link className="btn btn-secondary" variant="button" underline="none" color="default"
                                   onClick={this.openModal("cancel")}>
-                                Cancel
+                                Cancel preprocessing
                             </Link>
                         </ButtonGroup>
                     </div>
@@ -153,7 +193,8 @@ class BuildProgressMenu extends Component {
                                 // color="defaultcolor="secondary"
                                 underline="none"
                                 component={RouterLink}
-                                to={root}>
+                                to={root}
+                                onClick={this.goBack}>
                                 Restart with another dataset
                             </Link>
                             <Link

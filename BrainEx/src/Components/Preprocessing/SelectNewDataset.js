@@ -1,13 +1,33 @@
-import React, { Component } from 'react';
+import React, {Component, Fragment} from 'react';
 // import {preprocessed_files, rawdata_files} from "../../data/dummy_data";
 import '../../Stylesheets/Home.css';
-import { Button, Link, Typography, ButtonGroup } from '@material-ui/core';
-import { Link as RouterLink } from "react-router-dom";
+import {Button, Link, Typography, ButtonGroup, Container} from '@material-ui/core';
+import {Link as RouterLink} from "react-router-dom";
 import FormData from "form-data";
 import $ from "jquery";
 import axios from 'axios';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TablePagination from '@material-ui/core/TablePagination';
+import TableRow from '@material-ui/core/TableRow';
 import {build_options, root} from "../../data/default_values";
+import ViewerForCSV from "./ViewerForCSV";
 import {file_names} from '../../data/file_names'
+import Paper from "@material-ui/core/Paper";
+
+
+function json2array(json) {
+    var result = [];
+    var keys = Object.keys(json);
+    keys.forEach(function (key) {
+        result.push(json[key]);
+    });
+    return result;
+}
+
 
 class SelectNewDataset extends Component {
 
@@ -18,35 +38,38 @@ class SelectNewDataset extends Component {
             upload_files: null, /* for storing the file(s) chosen to be uploaded */
             all_files: [], /* for storing files displayed in file-list */
             curr_loi_max: null,
-            // viewPort:null,
-
+            data: null,
+            page: 0,
+            rowsPerPage: 10,
         };
         /* binding all handlers to the class */
         this.onChangeHandler = this.onChangeHandler.bind(this);
         this.onClickHandler = this.onClickHandler.bind(this);
         this.fileHandler = this.fileHandler.bind(this);
         this.isFileSelected = this.isFileSelected.bind(this);
+        this.handleChangePage = this.handleChangePage.bind(this);
+        this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
     }
 
     /*pull files from database here. this function is called after render() so all elements will be in place*/
     componentDidMount() {
-      axios.post('http://localhost:5000/rawNames')
-          .then((response) => {
-              console.log(response);
-              if (response.status === 200) {
-                  this.setState({
-                      all_files: this.state.all_files.concat(response.data.raw_files)
-                  }, () => {
-                      // console.log(this.state.current_file);
-                      console.log(response.data.raw_files);
-                  });
-              } else {
-                  console.log("File selection failed.");
-              }
-          })
-          .catch((error) => {
-              console.log(error);
-          });
+        axios.post('http://localhost:5000/rawNames')
+            .then((response) => {
+                console.log(response);
+                if (response.status === 200) {
+                    this.setState({
+                        all_files: this.state.all_files.concat(response.data.raw_files)
+                    }, () => {
+                        // console.log(this.state.current_file);
+                        console.log(response.data.raw_files);
+                    });
+                } else {
+                    console.log("File selection failed.");
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
 
     // if no file is selected, do not go to next page
@@ -54,6 +77,20 @@ class SelectNewDataset extends Component {
         if (this.state.current_file === null) {
             e.preventDefault();
         }
+    };
+
+    handleChangePage = (e, newPage) => {
+        this.setState({
+            page: newPage
+        })
+    };
+
+    handleChangeRowsPerPage = e => {
+        this.setState(
+            {
+                rowsPerPage: +e.target.value,
+                page: 0
+            })
     };
 
     /* file select handler. triggered once user clicks on a file in the file-list */
@@ -78,15 +115,13 @@ class SelectNewDataset extends Component {
         file_form.append("set_data", curr_file);
         axios.post('http://localhost:5000/setFileRaw', file_form)
             .then((response) => {
-                console.log(response);
                 if (response.status === 200) {
                     this.setState({
-                        // todo @Kyra i need the file returned here so i can set it as current_file in the response
-                        curr_loi_max: response.data.maxLength
-
+                        curr_loi_max: response.data.maxLength,
+                        data: json2array(JSON.parse(response.data.data))
+                        // todo @Kyra i need the file name returned here so i can set it as current_file in the response
                     }, () => {
-                        // console.log(this.state.current_file);
-                        console.log(response.data.message);
+                        console.log(this.state.data);
                     });
                 } else {
                     console.log("File selection failed.");
@@ -147,18 +182,22 @@ class SelectNewDataset extends Component {
             });
     };
 
+
     render() {
-        return(
+
+        return (
             <div className="full-height">
                 <div className="row no-gutters">
                     <div className="col col-3 no-gutters">
                         <div className="left d-flex justify-content-center align-items-center">
                             <div className="home-content">
                                 {/*list of files from the server (all_files, current_file)*/}
-                                <Typography className="directions" variant="h4">Select a dataset to preview here</Typography>
+                                <Typography className="directions" variant="h4">Select a dataset to preview
+                                    here</Typography>
                                 <ButtonGroup className="file-list" orientation="vertical" color="primary">
-                                    { this.state.all_files.map((file, index) => (
-                                        <Button id={index} className="btn-file" variant="contained" key={index} onClick={this.fileHandler}>{file}</Button>
+                                    {this.state.all_files.map((file, index) => (
+                                        <Button id={index} className="btn-file" variant="contained" key={index}
+                                                onClick={this.fileHandler}>{file}</Button>
                                     ))}
                                 </ButtonGroup>
                                 {/*adding a new file (upload_files)*/}
@@ -174,21 +213,80 @@ class SelectNewDataset extends Component {
                             </div>
                         </div>
                     </div>
-                    <div className="col">
-                        <div className="right build">
-                            <div>
-                                {/*display currently selected file to the user*/}
-                                {(this.state.current_file !== null) ? (
-                                    <p className="curr-file home-content">File currently
-                                        selected: {this.state.current_file}</p>
-                                ) : (
-                                    <div>
-                                        <p className="curr-file home-content">There is no file currently selected</p>
-                                        <Typography component="h2" variant="h16" color="primary" gutterBottom>Please
-                                            upload a file on the left to proceed</Typography>
-                                        {/*<p className="prompt-for-Upload"> </p>*/}
-                                    </div>
-                                )}
+                    <div className="col no-gutters">
+                        <div className="right d-flex justify-content-center align-items-center">
+                            <div className="home-content">
+                                <div className="csv-viewer ">
+                                    {(this.state.current_file === null) ? (
+                                        <Typography className="directions" variant="h2" color="primary" gutterBottom>
+                                            Please upload and/or choose a file on the left to proceed
+                                        </Typography>
+                                    ) : (
+                                        (this.state.data !== null) ? (
+                                            <Fragment>
+                                                <Typography>File being previewed: {this.state.current_file}</Typography>
+                                                <Container>
+                                                    <Paper>
+                                                        <TableContainer className='home-content'>
+                                                            <Table stickyHeader aria-label="sticky table"
+                                                                   className="csv-content" size='small'>
+                                                                {/*{Object.keys(this.state.data).map((header, i) => {*/}
+                                                                {/*    // loop through each header and fill in the table cell*/}
+                                                                {/*<Fragment>*/}
+                                                                <TableHead>
+                                                                    <TableRow>
+                                                                        {Object.keys(this.state.data[0]).map((col, i) => (
+                                                                            <TableCell key={col + i}>
+                                                                                {col}
+                                                                            </TableCell>
+                                                                        ))}
+                                                                    </TableRow>
+                                                                </TableHead>
+                                                                <TableBody>
+                                                                    {/*{console.log(json2array(this.state.data))}*/}
+                                                                    {this.state.data.slice(
+                                                                        this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage)
+                                                                        .map((row, i) => {
+                                                                            return (
+                                                                                <TableRow hover tabIndex={-1}
+                                                                                          key={row + i}>
+                                                                                    {Object.keys(row).map((col, i) => {
+                                                                                        return (
+                                                                                            <TableCell>
+                                                                                                {row[col]}
+                                                                                                {/*{console.log(  row[col[0]], 'check fill value'*/}
+                                                                                                {/*)}*/}
+                                                                                            </TableCell>
+                                                                                        )
+                                                                                    })}
+                                                                                </TableRow>
+                                                                            );
+                                                                        })}
+                                                                </TableBody>
+                                                                {/*</Fragment>*/}
+
+                                                            </Table>
+                                                        </TableContainer>
+                                                        <TablePagination
+                                                            rowsPerPageOptions={[10]}
+                                                            component="div"
+                                                            count={this.state.data.length}
+                                                            rowsPerPage={this.state.rowsPerPage}
+                                                            page={this.state.page}
+                                                            onChangePage={this.handleChangePage}
+                                                            onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                                                        />
+                                                    </Paper>
+                                                </Container>
+                                            </Fragment>
+                                        ) : (
+                                            <Typography variant="h2" color="primary" gutterBottom
+                                                        className='csv-viewer'>
+                                                No Data
+                                            </Typography>
+                                        )
+                                    )}
+                                </div>
                                 <Link
                                     onClick={this.isFileSelected}
                                     disabled={true}

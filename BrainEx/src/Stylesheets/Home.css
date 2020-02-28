@@ -2,17 +2,30 @@
     height: calc(100% - 64px); /*64px is height of header*/
 }
 
-.MuiTypography-root {
-    font-size: 110%;
+.MuiTypography-h1, .MuiTypography-h4, .MuiTypography-h3, .MuiButton-root, .MuiLink-root, .MuiTypography-root, .MuiTypography-h2, .MuiTypography-body1, .MuiFormLabel-root, .MuiFormControlLabel-label, .MuiInputLabel-root, .MuiTypography-h2, .MuiTypography-body1 {
+    font-size: large !important;
 }
 
-.MuiTypography-h2 {
-    font-size: 200% !important;
+/*.MuiTypography-h2 .MuiTypography-body1{*/
+/*    font-size: 500% !important;*/
+/*}*/
+
+.table-container {
+    max-height: 440px;
+}
+
+.table-null-content {
+    align-content: start !important;
+    vertical-align: top !important;
+    align-items: start !important;
+    align-self: start !important;
 }
 
 .row {
     height: 100%;
     width: 100%; /*prevents wonky scroll bars*/
+    margin: 0;
+    /*display: inline-block;*/
 }
 
 .col.col-3 {
@@ -28,8 +41,13 @@
     height: 100%;
 }
 
+.right {
+    width: 100%;
+}
+
 .right.build, .right.build .home-content {
     height: 100%;
+    width: calc(100%);
 }
 
 .MuiLink-root.build-btn {
@@ -97,9 +115,9 @@
     width: 60%;
 }
 
-.MuiButton-root, .MuiLink-root {
-    font-size: 1em !important;
-}
+/*.MuiButton-root, .MuiLink-root {*/
+/*    font-size: 1em !important;*/
+/*}*/
 
 .MuiButton-root.btn-primary, .MuiLink-root.btn-primary {
     background-color: #0f5298;
@@ -127,4 +145,30 @@
     justify-content: center;
     align-items: center;
     color: red;
+}
+
+/*.home-content table {
+	display: table;
+}
+.home-content table tr {
+	display: table-cell;
+}
+.home-content table tr td {
+	display: block;
+}*/
+
+.right .home-content {
+
+}
+.csv-viewer {
+    margin-top: -5%;
+    max-width: 935px;
+    margin-bottom: 5%;
+    margin-left: 3%;
+    margin-right: 2%;
+    max-height: inherit;
+}
+
+.csv-content {
+
 }
