@@ -275,7 +275,7 @@ class BuildOptions extends Component {
                         {/*form input 4*/}
                         <tr className="form-group">
                             <td className="form_label">
-                                <InputLabel htmlFor="loi">Length of Interest:</InputLabel>
+                                <InputLabel htmlFor="loi">Lengths of Interest:</InputLabel>
                             </td>
                             <td className="form_input is_range">
                                 <TextField
