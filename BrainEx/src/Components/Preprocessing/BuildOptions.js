@@ -235,7 +235,7 @@ class BuildOptions extends Component {
                                     value={this.state.distance_val}
                                     onChange={this.update_distance}
                                 >
-                                    <MenuItem value="eu">Warped Euclidean</MenuItem>
+                                    <MenuItem value="eu">Dynamic Time Warping</MenuItem>
                                     <MenuItem value="ma">Warped Manhattan</MenuItem>
                                     <MenuItem value="mi">Warped Minkowski</MenuItem>
                                     <MenuItem value="ch">Warped Chebyshev</MenuItem>
