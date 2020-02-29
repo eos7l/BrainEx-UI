@@ -27,31 +27,35 @@ brainexDB = None
 querySeq = None
 numFeatures = None
 
+
 def is_csv(filename):
     if '.' in filename and filename.rsplit('.', 1)[1].lower() == 'csv':
         return True
     else:
         return False
 
+
 @application.route('/rawNames', methods=['GET', 'POST'])
 def getRawNames():
-        if request.method == 'POST':
-            files = os.listdir(application.config['UPLOAD_FOLDER_RAW'])
-            json = {
-                    "Message" : "Returning file names",
-                    "raw_files": files
-            }
-            return jsonify(json)
+    if request.method == 'POST':
+        files = os.listdir(application.config['UPLOAD_FOLDER_RAW'])
+        json = {
+            "Message": "Returning file names",
+            "raw_files": files
+        }
+        return jsonify(json)
+
 
 @application.route('/proNames', methods=['GET', 'POST'])
 def getProNames():
-        if request.method == 'POST':
-            files = os.listdir(application.config['UPLOAD_FOLDER_PRO'])
-            json = {
-                    "Message" : "Returning file names",
-                    "pro_files": files
-            }
-            return jsonify(json)
+    if request.method == 'POST':
+        files = os.listdir(application.config['UPLOAD_FOLDER_PRO'])
+        json = {
+            "Message": "Returning file names",
+            "pro_files": files
+        }
+        return jsonify(json)
+
 
 @application.route('/getCSV', methods=['GET', 'POST'])
 def getStoreCSV():
@@ -63,13 +67,14 @@ def getStoreCSV():
                 return ("File not found.", 400)
             csv = request.files['uploaded_data' + str(i)]
             if csv.filename == '':
-                return("File not found", 400)
+                return ("File not found", 400)
             if csv and is_csv(csv.filename):
                 toSave = os.path.join(application.config['UPLOAD_FOLDER_RAW'], csv.filename)
-                csv.save(toSave) # Secure filename?? See tutorial
+                csv.save(toSave)  # Secure filename?? See tutorial
             else:
-                return("Invalid file.  Please upload a CSV", 400)
+                return ("Invalid file.  Please upload a CSV", 400)
         return "Files uploaded."
+
 
 @application.route('/getDB', methods=['GET', 'POST'])
 def getStoreDB():
@@ -79,13 +84,14 @@ def getStoreDB():
                 return ("File not found.", 400)
             db = request.files['uploaded_data' + str(i)]
             if db.filename == '':
-                return("File not found", 400)
+                return ("File not found", 400)
             if db:
                 toSave = os.path.join(application.config['UPLOAD_FOLDER_PRO'], db.filename)
-                db.save(toSave) # Secure filename?? See tutorial
+                db.save(toSave)  # Secure filename?? See tutorial
             else:
-                return("Invalid file.", 400)
+                return ("Invalid file.", 400)
         return "File has been uploaded."
+
 
 @application.route('/setFileRaw', methods=['GET', 'POST'])
 def setFileRaw():
@@ -107,6 +113,7 @@ def setFileRaw():
             "data": json
         }
         return jsonify(returnDict)
+
 
 @application.route('/setFilePro', methods=['GET', 'POST'])
 def setFilePro():
@@ -131,24 +138,26 @@ def setFilePro():
         max_result_mem = request.form['mrm_val']
         # else:
         #     use_spark = False
-        # try:
-        num_worker = int(num_worker)
-        # if use_spark:
-        driver_mem = int(driver_mem)
-        max_result_mem = int(max_result_mem)
-        brainexDB = from_db(uploadPath + "toDel\\most_recent_data", num_worker=num_worker, driver_mem=driver_mem, max_result_mem=max_result_mem)
-        # else:
-        #     brainexDB = from_db(uploadPath + "toDel\\most_recent_Data", num_worker=num_worker)
-        shutil.rmtree(uploadPath + "toDel")
-        return "File is set!"
-        # except Exception as e:
-        #     return (str(e), 400)
+        try:
+            num_worker = int(num_worker)
+            # if use_spark:
+            driver_mem = int(driver_mem)
+            max_result_mem = int(max_result_mem)
+            brainexDB = from_db(uploadPath + "toDel\\most_recent_data", num_worker=num_worker, driver_mem=driver_mem,
+                                max_result_mem=max_result_mem)
+            # else:
+            #     brainexDB = from_db(uploadPath + "toDel\\most_recent_Data", num_worker=num_worker)
+            shutil.rmtree(uploadPath + "toDel")
+            return "File is set!"
+        except Exception as e:
+            return (str(e), 400)
+
 
 @application.route('/saveFilePro', methods=['GET', 'POST'])
 def saveFilePro():
-     global brainexDB
+    global brainexDB
 
-     if request.method == 'POST':
+    if request.method == 'POST':
         os.chdir(os.path.dirname(os.path.abspath(__file__)))
         savePath = "../../Saved_Preprocessed/most_recent_data"
         try:
@@ -159,6 +168,7 @@ def saveFilePro():
         except Exception as e:
             return (str(e), 400)
 
+
 @application.route('/checkSpark', methods=['GET', 'POST'])
 def checkSpark():
     if request.method == 'POST':
@@ -167,6 +177,7 @@ def checkSpark():
             return "Spark is properly installed"
         except Exception as e:
             return (str(e), 400)
+
 
 @application.route('/build', methods=['GET', 'POST'])
 def build():
@@ -186,7 +197,8 @@ def build():
             if use_spark:
                 driver_mem = int(driver_mem)
                 max_result_mem = int(max_result_mem)
-                brainexDB = from_csv(uploadPath, feature_num=numFeatures, use_spark=use_spark, num_worker=num_worker, driver_mem=driver_mem, max_result_mem=max_result_mem)
+                brainexDB = from_csv(uploadPath, feature_num=numFeatures, use_spark=use_spark, num_worker=num_worker,
+                                     driver_mem=driver_mem, max_result_mem=max_result_mem)
             else:
                 brainexDB = from_csv(uploadPath, feature_num=numFeatures, use_spark=use_spark, num_worker=num_worker)
         except FileNotFoundError:
@@ -203,6 +215,7 @@ def build():
         except Exception as e:
             return (str(e), 400)
 
+
 @application.route('/uploadSequence', methods=['GET', 'POST'])
 def uploadSequence():
     global querySeq
@@ -214,7 +227,7 @@ def uploadSequence():
             return ("File not found.", 400)
         csv = request.files['sequence_file']
         if csv.filename == '':
-            return("File not found", 400)
+            return ("File not found", 400)
         if csv and is_csv(csv.filename):
             # Check to make sure there's only one line there
             with open(csv.filename) as f:
@@ -241,16 +254,17 @@ def uploadSequence():
                 }
                 return jsonify(returnDict)
             else:
-                return("Please only submit one sequence at a time", 400)
+                return ("Please only submit one sequence at a time", 400)
         else:
-            return("Invalid file.  Please upload a CSV", 400)
+            return ("Invalid file.  Please upload a CSV", 400)
+
 
 @application.route('/query', methods=['GET', 'POST'])
 def complete_query():
     global querySeq, brainexDB
 
     if request.method == "POST":
-        #TODO: Ask Leo where loi is
+        # TODO: Ask Leo where loi is
         # loi_temp = request.form['loi_temp']
         # loiA = loi_temp.split('')
         # loi = [float(loiA[0]), float(loiA[1])]
@@ -268,12 +282,13 @@ def complete_query():
         seqs = [i[1] for i in query_result]
         for i in seqs:
             i = i.fetch_data(brainexDB.data_original)
-        ids = [i for i in range(1,best_matches+1)]
+        ids = [i for i in range(1, best_matches + 1)]
         sequence_id = [i.seq_id for i in seqs]
         start = [i.start for i in seqs]
         end = [i.end for i in seqs]
         data = [i.data.tolist() for i in seqs]
-        pandasQ = pd.DataFrame({"similarity":sims, "ID":ids, "start":start, "end":end, "data":data, "sequence_id":sequence_id})
+        pandasQ = pd.DataFrame(
+            {"similarity": sims, "ID": ids, "start": start, "end": end, "data": data, "sequence_id": sequence_id})
         allData = []
         for elem in pandasQ['data']:
             for e in elem:
@@ -281,7 +296,7 @@ def complete_query():
         dataMin = min(allData)
         dataMax = max(allData)
         dataSd = np.std(allData)
-        dataMean = sum(allData)/len(allData)
+        dataMean = sum(allData) / len(allData)
         dataMedian = np.median(allData)
         lenP = pandasQ['end'] - pandasQ['start']
         lenMin = lenP.min()
@@ -307,9 +322,12 @@ def complete_query():
         return jsonify(returnDict)
         # except Exception as e:
         #     return (str(e), 400)
+
+
 @application.route('/saveDataOutput', methods=['GET', 'POST'])
 def save():
     return "Not implemented."
+
 
 @application.route('/restart', methods=['GET', 'POST'])
 def stop():
