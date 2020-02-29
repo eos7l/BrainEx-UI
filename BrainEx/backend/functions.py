@@ -122,7 +122,7 @@ def setFilePro():
         notFeature = 0
         for elem in dataframe.columns:
             if 'unnamed' in elem:
-                notFeature = notFeature + 1;
+                notFeature = notFeature + 1
         numFeatures = len(dataframe.columns) - notFeature
         # use_spark_int = request.form['spark_val']
         # if use_spark_int == "1":
