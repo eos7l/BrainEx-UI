@@ -201,6 +201,7 @@ export default class DataTable extends Component {
                     variant="contained"
                     color="primary"
                     size="large"
+                    className='save-btn'
                     // className={classes.button}
                     startIcon={<SaveIcon/>}
                 >
