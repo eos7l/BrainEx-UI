@@ -212,7 +212,7 @@ export default function Filter(props) {
                                 value={overlapVal}
                                 onChange={handleOverlapChange}
                                 variant="filled"
-                                label="Overlap of sequence allowed"
+                                label="Overlap of sequences allowed"
                                 id="overlap-percentage"
                                 size="small"
                                 placeholder={default_overlap}
