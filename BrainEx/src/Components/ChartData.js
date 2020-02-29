@@ -35,6 +35,17 @@ class ChartData extends Component {
                     mappedData[d.id] = d.sequence;
                     return mappedData
                 });
+                if (this.props.data === []) {
+                    this.setState(
+                        {
+                            data: [],// initial value
+                            lineColorList: ['#FFFFFF'],
+                            lineData: [{
+                                "Timestamp": "0",
+                                "": 0
+                            }],
+                        })
+                }
                 // console.log(jsonData, 'jsonData in data formatter');
                 let parsedLineData = [];
                 let firstData = Object.values(jsonData[0])[0];

@@ -100,7 +100,7 @@ def setFileRaw():
             if 'unnamed' in elem:
                 notFeature = notFeature + 1;
         numFeatures = len(dataframe.columns) - notFeature
-        json = dataframe.to_json()
+        json = dataframe.to_json(orient="index")
         returnDict = {
             "message": "File has been set.",
             "maxLength": str(notFeature),
@@ -307,6 +307,9 @@ def complete_query():
         return jsonify(returnDict)
         # except Exception as e:
         #     return (str(e), 400)
+@application.route('/saveDataOutput', methods=['GET', 'POST'])
+def save():
+    return "Not implemented."
 
 @application.route('/restart', methods=['GET', 'POST'])
 def stop():

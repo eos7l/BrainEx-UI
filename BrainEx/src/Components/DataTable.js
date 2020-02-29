@@ -136,7 +136,7 @@ export default class DataTable extends Component {
         return (
             <React.Fragment>
                 <Title>Ranked Matching Sequences</Title>
-                <Table size="small">
+                <Table size="small" className='table-null-content'>
                     <TableHead>
                         <TableRow>
                             <TableCell>
@@ -191,6 +191,7 @@ export default class DataTable extends Component {
                     variant="contained"
                     color="primary"
                     size="large"
+                    className='save-btn'
                     // className={classes.button}
                     startIcon={<SaveIcon/>}
                 >
