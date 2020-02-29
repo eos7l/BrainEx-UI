@@ -10,8 +10,6 @@ export default class MainChartViz extends React.Component {
     };
 
     componentDidUpdate(nextProps, nextState, snapshot) {
-        console.log(this.props.lineData, 'this.props.linedata in main chart viz');
-        console.log(nextProps.lineData, 'prevprops.linedata in main chart viz');
         if (!this.state.lineData) {
             this.setState({
                 lineColorList: ['#FFFFFF'],
@@ -21,16 +19,13 @@ export default class MainChartViz extends React.Component {
                 }],
             })
         } // error prevention
-        if (this.props.lineData !== nextProps.lineData) {
-            this.setState({
-                lineData: this.props.lineData,
-                lineColorList: this.props.lineColorList,
-            }, () => {
-                console.log(this.state.lineData, 'this.state.lineData in componentDidUpdate');
-                console.log(this.state.lineColorList, 'this.state.lineColorlist in componentDidUpdate');
-
-            });
-        }
+        // if (this.props.lineData !== nextProps.lineData) {
+        //     this.setState({
+        //         lineData: this.props.lineData,
+        //         lineColorList: this.props.lineColorList,
+        //     }, () => {
+        //     });
+        // }
     }
 
     render() {
