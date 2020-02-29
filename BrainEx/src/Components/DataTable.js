@@ -34,7 +34,7 @@ export default class DataTable extends Component {
         this.state = {
             checkboxValues: [],
             queryResults: [],
-            allChecked: true
+            allChecked: false
             // filteredData: this.createTable(query_results) // initially its all data
         };
         this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
@@ -91,6 +91,7 @@ export default class DataTable extends Component {
         let newAllChecked = event.currentTarget.checked;
         // create new checkbox array of all newAllChecked values
         let newCheckboxValues = Array(this.state.checkboxValues.length).fill(newAllChecked);
+        // if (this.state.queryResults.length !== 0) {
         this.setState({
             checkboxValues: newCheckboxValues,
             allChecked: newAllChecked
@@ -98,8 +99,12 @@ export default class DataTable extends Component {
             console.log("checkboxes updated in selectAll to " + this.state.allChecked);
             // send new true data to ChartData through Dashboard
             let filteredData = this.getTrueRows(this.state.queryResults);
-            this.props.sendData(filteredData);
+            if (filteredData.length !== 0) {
+                this.props.sendData(filteredData);
+            }
         });
+        // }
+
     }
 
     // initialize list of checkbox values to be all true, same number of items as rows in data
@@ -126,6 +131,9 @@ export default class DataTable extends Component {
             let result = data[i];
             let length = table.push(this.createData(result.ID, colors[i], result.sequence_id, result.start, result.end, result.similarity, result.data));
         }
+        this.setState({
+            allChecked: true
+        });
         this.props.sendData(table);
         // this.props.sendData(colors);
         console.log('table', table);
