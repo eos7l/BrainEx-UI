@@ -1,4 +1,4 @@
-import React, {Component, useState, useEffect} from 'react';
+import React, {Component, useState, useEffect, Fragment} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -14,6 +14,7 @@ import Button from '@material-ui/core/Button';
 import {top_color, bottom_color} from '../data/default_values';
 import TabledSeqThnl from "./TabledSeqThnl"; // thumbnail component
 import SaveIcon from '@material-ui/icons/Save';
+import TableContainer from "@material-ui/core/TableContainer";
 
 // generates x number of unique hex values between two given colors (generates a proportional gradient)
 function generateColors(numColors, top_color, bottom_color) {
@@ -134,58 +135,60 @@ export default class DataTable extends Component {
     render() {
         // const classes = useStyles();
         return (
-            <React.Fragment>
+            <Fragment>
                 <Title>Ranked Matching Sequences</Title>
-                <Table size="small" className='table-null-content'>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>
-                                Show
-                                <Checkbox checked={this.state.allChecked}
-                                          style={{ width: 36, height: 36 }}
-                                          icon={<CheckBoxOutlineBlankIcon style={{ fontSize: 20 }} />}
-                                          checkedIcon={<CheckBoxIcon style={{ fontSize: 20 }} />}
-                                          onChange={this.selectAll}/>
-                            </TableCell>
-                            <TableCell>Rank</TableCell>
-                            <TableCell>Sequence ID</TableCell>
-                            <TableCell>Start Time</TableCell>
-                            <TableCell>End Time</TableCell>
-                            <TableCell>Similarity</TableCell>
-                            <TableCell>Thumbnail</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {(this.state.queryResults) ? (this.state.queryResults.map((row, i) => (
-                            <TableRow key={row.id}>
-                                <TableCell style={{backgroundColor: "#" + row.color}}>
-                                    <Checkbox id={row.id}
-                                              key={i}
-                                              checked={this.state.checkboxValues[i]}
-                                              onChange={(e) => this.handleCheckboxChange(i, e)}
+                <TableContainer>
+                    <Table stickyHeader size="small" className='table-null-content'>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>
+                                    Show
+                                    <Checkbox checked={this.state.allChecked}
                                               style={{ width: 36, height: 36 }}
                                               icon={<CheckBoxOutlineBlankIcon style={{ fontSize: 20 }} />}
-                                              checkedIcon={<CheckBoxIcon style={{ fontSize: 20 }} />}/>
+                                              checkedIcon={<CheckBoxIcon style={{ fontSize: 20 }} />}
+                                              onChange={this.selectAll}/>
                                 </TableCell>
-                                <TableCell>{row.rank}</TableCell>
-                                <TableCell>{row.id}</TableCell>
-                                <TableCell>{row.startTime}</TableCell>
-                                <TableCell>{row.endTime}</TableCell>
-                                <TableCell>{row.similarity}</TableCell>
-                                <TableCell><TabledSeqThnl color={row.color} data={row.sequence}/></TableCell>
+                                <TableCell>Rank</TableCell>
+                                <TableCell>Sequence ID</TableCell>
+                                <TableCell>Start Time</TableCell>
+                                <TableCell>End Time</TableCell>
+                                <TableCell>Similarity</TableCell>
+                                <TableCell>Thumbnail</TableCell>
                             </TableRow>
-                        ))) : (
-                            <TableRow>
-                                <TableCell></TableCell>
-                                <TableCell></TableCell>
-                                <TableCell></TableCell>
-                                <TableCell></TableCell>
-                                <TableCell></TableCell>
-                                <TableCell></TableCell>
-                            </TableRow>
-                        )}
-                    </TableBody>
-                </Table>
+                        </TableHead>
+                        <TableBody>
+                            {(this.state.queryResults) ? (this.state.queryResults.map((row, i) => (
+                                <TableRow key={row.id}>
+                                    <TableCell style={{backgroundColor: "#" + row.color}}>
+                                        <Checkbox id={row.id}
+                                                  key={i}
+                                                  checked={this.state.checkboxValues[i]}
+                                                  onChange={(e) => this.handleCheckboxChange(i, e)}
+                                                  style={{ width: 36, height: 36 }}
+                                                  icon={<CheckBoxOutlineBlankIcon style={{ fontSize: 20 }} />}
+                                                  checkedIcon={<CheckBoxIcon style={{ fontSize: 20 }} />}/>
+                                    </TableCell>
+                                    <TableCell>{row.rank}</TableCell>
+                                    <TableCell>{row.id}</TableCell>
+                                    <TableCell>{row.startTime}</TableCell>
+                                    <TableCell>{row.endTime}</TableCell>
+                                    <TableCell>{row.similarity}</TableCell>
+                                    <TableCell><TabledSeqThnl color={row.color} data={row.sequence}/></TableCell>
+                                </TableRow>
+                            ))) : (
+                                <TableRow>
+                                    <TableCell></TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell></TableCell>
+                                </TableRow>
+                            )}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
                 <Button
                     variant="contained"
                     color="primary"
@@ -200,7 +203,7 @@ export default class DataTable extends Component {
                 {/*    Show more sequences*/}
                 {/*  </Link>*/}
                 {/*</div>*/}
-            </React.Fragment>
+            </Fragment>
         );
     }
 }
