@@ -83,7 +83,9 @@ export default class DataTable extends Component {
             console.log("updated in handle checkbox change to " + this.state.allChecked);
             // send new true data to ChartData through Dashboard
             let filteredData = this.getTrueRows(this.state.queryResults);
-            this.props.sendData(filteredData);
+            if (filteredData.length !== 0) {
+                this.props.sendData(filteredData);
+            }
         });
     }
 
