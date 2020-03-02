@@ -29,13 +29,9 @@ class ChartData extends Component {
         // only update props if props have changed
         if (nextProps.data !== this.props.data) {
             function dataFormatter(lineData) {
-                // console.log(lineData, 'lineData as received as props');
-                let jsonData = lineData.map(d => {
-                    let mappedData = {};
-                    mappedData[d.id] = d.sequence;
-                    return mappedData
-                });
-                if (this.props.data === []) {
+                console.log(lineData, 'lineData as received as props');
+
+                if (lineData === []) {
                     this.setState(
                         {
                             data: [],// initial value
@@ -44,8 +40,16 @@ class ChartData extends Component {
                                 "Timestamp": "0",
                                 "": 0
                             }],
+                        }, () => {
+                            return this.state.lineData;
                         })
                 }
+                let jsonData = lineData.map(d => {
+                    let mappedData = {};
+                    mappedData[d.id] = d.sequence;
+                    return mappedData
+                });
+
                 // console.log(jsonData, 'jsonData in data formatter');
                 let parsedLineData = [];
                 let firstData = Object.values(jsonData[0])[0];
@@ -65,7 +69,7 @@ class ChartData extends Component {
                 // console.log('jSONdata in the end of data formatter', jsonData);
                 return parsedLineData
             }
-
+            console.log(this.props.data, "this.props.data");
             let linePaths = dataFormatter(this.props.data);
             // keep this because it prevents it from entering an infinite rerender loop
             // console.log('data before setting the state', this.props.data);

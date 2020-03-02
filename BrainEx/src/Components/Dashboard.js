@@ -128,7 +128,7 @@ export default function Dashboard(props) {
                                     <DataTable queryResults={queryResults} sendData={receiveData}/>
                                 </Paper>
                             </Grid>
-                            <Chart/>
+                            {/*<Chart/>*/}
                         </Grid>
                     </Grid>
                     <Box pt={4}>
