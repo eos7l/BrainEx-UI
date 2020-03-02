@@ -7,8 +7,8 @@ import 'rc-slider/assets/index.css';
 import { makeStyles, Button, ButtonGroup, FormControl,
     FormGroup, FormControlLabel, Checkbox, Typography,
     Slider, Input, Grid, InputAdornment, TextField } from "@material-ui/core";
-import CheckBoxOutlineBlankIcon from "material-ui-icons/CheckBoxOutlineBlank";
-import CheckBoxIcon from "material-ui-icons/CheckBox";
+import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import axios from 'axios';
 import {default_matches, default_overlap, excludeSameID} from "../data/default_values";
 

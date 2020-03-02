@@ -7,8 +7,8 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Title from './Title';
 import Checkbox from '@material-ui/core/Checkbox';
-import CheckBoxOutlineBlankIcon from "material-ui-icons/CheckBoxOutlineBlank";
-import CheckBoxIcon from "material-ui-icons/CheckBox";
+import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import Rainbow from 'rainbowvis.js/rainbowvis.js';
 import Button from '@material-ui/core/Button';
 import {top_color, bottom_color} from '../data/default_values';
@@ -83,7 +83,9 @@ export default class DataTable extends Component {
             console.log("updated in handle checkbox change to " + this.state.allChecked);
             // send new true data to ChartData through Dashboard
             let filteredData = this.getTrueRows(this.state.queryResults);
-            this.props.sendData(filteredData);
+            if (filteredData.length !== 0) {
+                this.props.sendData(filteredData);
+            }
         });
     }
 

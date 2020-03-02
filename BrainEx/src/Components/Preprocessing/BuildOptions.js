@@ -20,8 +20,8 @@ import Input from "@material-ui/core/Input";
 import { default_dv, default_st, default_spark, default_sv, default_nw, default_dm, default_mrm, build_progress, select_new_dataset } from "../../data/default_values";
 import BuildProgressMenu from "./BuildProgressMenu.js";
 import FormData from "form-data";
-import CheckBoxOutlineBlankIcon from "material-ui-icons/CheckBoxOutlineBlank";
-import CheckBoxIcon from "material-ui-icons/CheckBox";
+import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@material-ui/icons/CheckBox";
 
 class BuildOptions extends Component {
 
