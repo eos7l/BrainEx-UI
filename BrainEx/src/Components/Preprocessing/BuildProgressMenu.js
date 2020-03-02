@@ -12,6 +12,7 @@ import {homepage} from "d3/dist/package";
 import axios from "axios";
 import { store } from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 class BuildProgressMenu extends Component {
     constructor(props) {
@@ -24,7 +25,8 @@ class BuildProgressMenu extends Component {
             message: null,
             mode: null,
             isPreprocessing: true,
-            preprocessed_dataset: null
+            preprocessed_dataset: null,
+            isDownloading: false
         };
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
@@ -108,37 +110,64 @@ class BuildProgressMenu extends Component {
     };
 
     saveDataset = (e) => {
-        axios.post('http://localhost:5000/saveFilePro')
+        if (!this.state.isDownloading) { // if there is currently no download in progress
+            this.setState({
+                isDownloading: true
+            }, () => {
+                console.log("isDownloading set to true");
+                axios.post('http://localhost:5000/saveFilePro')
+                    .then((response) => {
+                        console.log(response);
+                        this.setState({
+                            isDownloading: false
+                        } ,() => {
+                            store.addNotification({
+                                title: "Download Successful",
+                                message: response.data,
+                                type: "success",
+                                insert: "top",
+                                container: "bottom-center",
+                                animationIn: ["animated", "fadeIn"],
+                                animationOut: ["animated", "fadeOut"],
+                                dismiss: {
+                                    duration: 10000,
+                                    pauseOnHover: true,
+                                    onScreen: true
+                                }
+                            });
+                        });
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            });
+        } else {
+            store.addNotification({
+                title: "Application Error",
+                message: "Download in progress. Please wait.",
+                type: "danger",
+                insert: "top",
+                container: "bottom-center",
+                animationIn: ["animated", "fadeIn"],
+                animationOut: ["animated", "fadeOut"],
+                dismiss: {
+                    duration: 5000,
+                    pauseOnHover: true,
+                    onScreen: true
+                }
+            })
+        }
+    };
+
+    goToHome = (e) => {
+        axios.post('http://localhost:5000/restart')
             .then((response) => {
                 console.log(response);
-                store.addNotification({
-                    title: "Download Successful",
-                    message: response.data,
-                    type: "success",
-                    insert: "top",
-                    container: "bottom-center",
-                    animationIn: ["animated", "fadeIn"],
-                    animationOut: ["animated", "fadeOut"],
-                    dismiss: {
-                        duration: 10000,
-                        pauseOnHover: true,
-                        onScreen: true
-                    }
-                })
+                this.props.history.push(root);
             })
             .catch(function (error) {
                 console.log(error);
             });
-    };
-
-    goBack = (e) => {
-      axios.post('http://localhost:5000/restart')
-          .then((response) => {
-              console.log(response);
-          })
-          .catch(function (error) {
-              console.log(error);
-          });
     };
 
     render() {
@@ -194,7 +223,7 @@ class BuildProgressMenu extends Component {
                                 underline="none"
                                 component={RouterLink}
                                 to={root}
-                                onClick={this.goBack}>
+                                onClick={this.goToHome}>
                                 Restart with another dataset
                             </Link>
                             <Link
@@ -222,9 +251,15 @@ class BuildProgressMenu extends Component {
                                 Find Similar Sequences
                             </Link>
                         </ButtonGroup>
-                        <ButtonGroup>
+                        <div className="save_preprocessed">
                             <Button className="save_data" color="primary" onClick={this.saveDataset}>Download preprocessed dataset</Button>
-                        </ButtonGroup>
+                            {(this.state.isDownloading) ? (
+                                <div>
+                                    <br/>
+                                    <br/>
+                                    <CircularProgress className="save_progress" color="primary"/>
+                                </div>) : ("")}
+                        </div>
                     </div>
                 )}
             </div>

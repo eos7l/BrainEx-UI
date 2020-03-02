@@ -25,3 +25,11 @@
 .MuiLinearProgress-root.progress {
     margin: auto;
 }
+
+.save_preprocessed {
+    position: relative;
+}
+
+.save_progress {
+
+}

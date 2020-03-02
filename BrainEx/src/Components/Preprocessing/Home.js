@@ -130,7 +130,7 @@ class Home extends Component {
                         upload_files: null // reset upload_files to none
                     }, () => { // callback function for debugging
                         console.log(response.data);
-                    })
+                    });
                 } else {
                     console.log("file upload unsuccessful. :(");
                 }
