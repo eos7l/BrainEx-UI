@@ -8,7 +8,7 @@ import Title from './Title';
 // export default function Chart() {
 //     const theme = useTheme();
 
-class ChartData extends Component {
+export default class ChartData extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -35,17 +35,6 @@ class ChartData extends Component {
                     mappedData[d.id] = d.sequence;
                     return mappedData
                 });
-                if (this.props.data === []) {
-                    this.setState(
-                        {
-                            data: [],// initial value
-                            lineColorList: ['#FFFFFF'],
-                            lineData: [{
-                                "Timestamp": "0",
-                                "": 0
-                            }],
-                        })
-                }
                 // console.log(jsonData, 'jsonData in data formatter');
                 let parsedLineData = [];
                 let firstData = Object.values(jsonData[0])[0];
@@ -100,24 +89,17 @@ class ChartData extends Component {
 // }
 
     render() {
-        const drawLines = this.state.lineData;
-        const lineColors = this.state.lineColorList;
+        // const drawLines = this.state.lineData;
+        // const lineColors = this.state.lineColorList;
         return (
             <div className="Chart">
                 <React.Fragment>
                     <Title>Query Result</Title>
                     <ResponsiveContainer>
-                        <MainChartViz lineData={drawLines} lineColorList={lineColors}/>
+                        <MainChartViz lineData={this.state.lineData} lineColorList={this.state.lineColorList}/>
                     </ResponsiveContainer>
                 </React.Fragment>
             </div>
         );
     }
 }
-
-export default ChartData;
-
-
-
-
-
