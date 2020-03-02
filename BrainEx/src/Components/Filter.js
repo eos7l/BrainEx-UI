@@ -246,7 +246,7 @@ export default function Filter(props) {
                                 Submit Query
                             </Button>
                             <Button size="medium" variant="contained" color="default" onClick={handleClearInput}>
-                                Clear Query {/*todo dialog letting user know that this will erase the table and graph*/}
+                                Clear Results {/*todo dialog letting user know that this will erase the table and graph*/}
                             </Button>
                         </ButtonGroup>
                     </div>
