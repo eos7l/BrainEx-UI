@@ -14,7 +14,6 @@ import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import {build_options, root} from "../../data/default_values";
-import ViewerForCSV from "./ViewerForCSV";
 import {file_names} from '../../data/file_names'
 import Paper from "@material-ui/core/Paper";
 
@@ -207,6 +206,7 @@ class SelectNewDataset extends Component {
                                         <input type="file" name="file" className="form-control-file" accept=".csv"
                                                onChange={this.onChangeHandler} multiple/>
                                         <Button type="submit" variant="contained" color="primary"
+                                                className="btn-primary"
                                                 onClick={this.onClickHandler}>Add</Button>
                                     </div>
                                 </form>
@@ -218,7 +218,7 @@ class SelectNewDataset extends Component {
                             <div className="home-content">
                                 <div className="csv-viewer ">
                                     {(this.state.current_file === null) ? (
-                                        <Typography className="directions" variant="h2" color="primary" gutterBottom>
+                                        <Typography className="directions" variant="h2" color="black" gutterBottom>
                                             Please upload and/or choose a file on the left to proceed
                                         </Typography>
                                     ) : (
