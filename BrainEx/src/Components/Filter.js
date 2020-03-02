@@ -234,7 +234,7 @@ export default function Filter(props) {
                                                    style={{ width: 36, height: 36 }}
                                                    icon={<CheckBoxOutlineBlankIcon style={{ fontSize: 20 }} />}
                                                    checkedIcon={<CheckBoxIcon style={{ fontSize: 20 }} />}/>}
-                                label="Exclude subsequence matches from current sequence"
+                                label="Exclude subsequence matches from current query sequence"
                                 labelPlacement="end"
                             />
                         </FormGroup>
@@ -243,10 +243,10 @@ export default function Filter(props) {
                         <ButtonGroup>
                             <Button type="submit" size="medium" variant="contained" color="primary"
                                     onClick={handleQuery}>
-                                Apply
+                                Submit Query
                             </Button>
                             <Button size="medium" variant="contained" color="default" onClick={handleClearInput}>
-                                Clear
+                                Clear Query {/*todo dialog letting user know that this will erase the table and graph*/}
                             </Button>
                         </ButtonGroup>
                     </div>

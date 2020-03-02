@@ -183,7 +183,7 @@ export default class DataTable extends Component {
                                     <TableCell>{row.id}</TableCell>
                                     <TableCell>{row.startTime}</TableCell>
                                     <TableCell>{row.endTime}</TableCell>
-                                    <TableCell>{row.similarity}</TableCell>
+                                    <TableCell>{row.similarity*100}%</TableCell>
                                     <TableCell><TabledSeqThnl color={row.color} data={row.sequence}/></TableCell>
                                 </TableRow>
                             ))) : (
