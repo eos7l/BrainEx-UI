@@ -32,7 +32,7 @@ class CurrSeqSelection extends Component {
             file:null,
         };
         this.updateFile = this.updateFile.bind(this);
-        this.onClickHandler = this.onClickHandler.bind(this);
+        // this.onClickHandler = this.onClickHandler.bind(this);
     }
 
     // onClickHandler = (e) => {
@@ -66,7 +66,7 @@ class CurrSeqSelection extends Component {
     //             console.log(error);
     //         });
     // };
-    
+
     updateFile = (e) => {
         // this.setState({file: e.target.value});
         this.setState({file: [...e.target.files]}, () => {
