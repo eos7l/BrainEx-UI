@@ -35,40 +35,69 @@ class CurrSeqSelection extends Component {
         this.onClickHandler = this.onClickHandler.bind(this);
     }
 
-    onClickHandler = (e) => {
-        e.preventDefault(); // prevents page refresh on submit
-        /* create form data object and append files to be uploaded onto it*/
-        let file_form = new FormData();
-        this.state.file.map((file) => {
-            file_form.append("sequence_file", file); // add upload_files to FormData object
-        });
-        // Hook up to Kyra's server
-        axios.post('http://localhost:5000/uploadSequence', file_form)
-            .then((response) => {
-                console.log(response);
-                if (response.status === 200) {
-                    let data = [];
-                    const jsonObj = JSON.parse(response.data.sequenceJSON)
-                    for (let key in Object.keys(jsonObj)) {
-                        data.push(jsonObj[key])
-                    }
-                    this.setState({
-                            channelValues: data,
-                        }, () => {
-                            // console.log(response.data.sequenceJSON, 'sequenceJSON');
-                        }
-                    );
-                } else {
-                    console.log("Upload failure");
-                }
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    };
+    // onClickHandler = (e) => {
+    //     e.preventDefault(); // prevents page refresh on submit
+    //     /* create form data object and append files to be uploaded onto it*/
+    //     let file_form = new FormData();
+    //     this.state.file.map((file) => {
+    //         file_form.append("sequence_file", file); // add upload_files to FormData object
+    //     });
+    //     // Hook up to Kyra's server
+    //     axios.post('http://localhost:5000/uploadSequence', file_form)
+    //         .then((response) => {
+    //             console.log(response);
+    //             if (response.status === 200) {
+    //                 let data = [];
+    //                 const jsonObj = JSON.parse(response.data.sequenceJSON)
+    //                 for (let key in Object.keys(jsonObj)) {
+    //                     data.push(jsonObj[key])
+    //                 }
+    //                 this.setState({
+    //                         channelValues: data,
+    //                     }, () => {
+    //                         // console.log(response.data.sequenceJSON, 'sequenceJSON');
+    //                     }
+    //                 );
+    //             } else {
+    //                 console.log("Upload failure");
+    //             }
+    //         })
+    //         .catch((error) => {
+    //             console.log(error);
+    //         });
+    // };
+    
     updateFile = (e) => {
         // this.setState({file: e.target.value});
-        this.setState({file: [...e.target.files]});
+        this.setState({file: [...e.target.files]}, () => {
+            let file_form = new FormData();
+            this.state.file.map((file) => {
+                file_form.append("sequence_file", file); // add upload_files to FormData object
+            });
+            // Hook up to Kyra's server
+            axios.post('http://localhost:5000/uploadSequence', file_form)
+                .then((response) => {
+                    console.log(response);
+                    if (response.status === 200) {
+                        let data = [];
+                        const jsonObj = JSON.parse(response.data.sequenceJSON);
+                        for (let key in Object.keys(jsonObj)) {
+                            data.push(jsonObj[key])
+                        }
+                        this.setState({
+                                channelValues: data,
+                            }, () => {
+                                // console.log(response.data.sequenceJSON, 'sequenceJSON');
+                            }
+                        );
+                    } else {
+                        console.log("Upload failure");
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        });
     };
 
     render() {
@@ -87,12 +116,12 @@ class CurrSeqSelection extends Component {
                         type="file"
                         onChange={this.updateFile}
                     />
-                    <label htmlFor="outlined-button-file">
-                        <Button variant="outlined" component="span" size="small" startIcon={<CloudUploadIcon/>}
-                                onClick={this.onClickHandler}>
-                            Upload
-                        </Button>
-                    </label>
+                    {/*<label htmlFor="outlined-button-file">*/}
+                    {/*    <Button variant="outlined" component="span" size="small" startIcon={<CloudUploadIcon/>}*/}
+                    {/*            onClick={this.onClickHandler}>*/}
+                    {/*        Upload*/}
+                    {/*    </Button>*/}
+                    {/*</label>*/}
                 </div>
 
             </React.Fragment>
