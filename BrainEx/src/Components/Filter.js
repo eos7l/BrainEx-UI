@@ -13,6 +13,8 @@ import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import axios from 'axios';
 import {default_matches, default_overlap, excludeSameID} from "../data/default_values";
+import {max} from "d3-array";
+import FormHelperText from "@material-ui/core/FormHelperText";
 
 /*function preventDefault(event) {
     event.preventDefault();
@@ -243,29 +245,21 @@ export default function Filter(props) /*extends Component*/ {
                             {/* NUMBER OF MATCHES FIELD */}
                             <TextField
                                 required
+                                error={(numMatches > max_matches)}
                                 value={numMatches}
                                 onChange={handleMatchChange}
                                 id="outlined-number"
                                 label="Number of best sequence matches"
                                 placeholder={default_matches}
-                                // multiline
                                 size="small"
                                 variant="filled"
-                                InputProps = {{
-                                    inputProps: {
-                                         step: 1,
-                                    min: 1,
-                                    max: max_matches,
-                                    type: 'number'
-                                    }
-                                }}
-                                /*inputProps={{
+                                type="number"
+                                helperText={(numMatches > max_matches) ? ("Error: Value larger than max: " + max_matches) : ("Max matches possible: " + max_matches)}
+                                inputProps = {{
                                     step: 1,
                                     min: 1,
-                                    max: max_matches,
-                                    type: 'number'
-                                }}*/
-                            />
+                                    max: max_matches
+                                }}/>
                             {/* OVERLAP FIELD */}
                             <TextField
                                 required
