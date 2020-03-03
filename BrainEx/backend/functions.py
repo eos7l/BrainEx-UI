@@ -326,7 +326,9 @@ def complete_query():
 
 @application.route('/saveDataOutput', methods=['GET', 'POST'])
 def save():
-    return "Not implemented."
+    if request.method == "POST":
+        print(str(request.form['data']))
+        return "Not implemented fully."
 
 
 @application.route('/restart', methods=['GET', 'POST'])
