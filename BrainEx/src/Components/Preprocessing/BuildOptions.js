@@ -186,7 +186,8 @@ class BuildOptions extends Component {
         this.props.history.push(build_progress, {
             form_data: form_data,
             loi_min: this.state.loi_val[0],
-            loi_max: this.state.loi_val[1]
+            loi_max: this.state.loi_val[1],
+            old_max: this.state.loi_max
         }); // proceed to next page once information has been passed
     };
 

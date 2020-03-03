@@ -27,7 +27,8 @@ class BuildProgressMenu extends Component {
             isPreprocessing: true,
             preprocessed_dataset: null,
             isDownloading: false,
-            num_sequences: 0
+            num_sequences: 0,
+            old_max: this.props.location.state.old_max
         };
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
@@ -112,7 +113,7 @@ class BuildProgressMenu extends Component {
                 .catch(function (error) {
                     console.log(error);
                 });
-            this.props.history.push(build_options);
+            this.props.history.push(build_options, {loi_max: this.state.old_max});
         } else if (mode === "home") {
             // return to home
             axios.post('http://localhost:5000/restart')
@@ -249,12 +250,12 @@ class BuildProgressMenu extends Component {
                         <Typography className="prog-item" variant="h4">Preprocessing is currently in
                             progress</Typography>
                         <ButtonGroup className="prog-item">
-                            <Link className="btn btn-secondary" variant="button" underline="none" color="default"
-                                  onClick={this.openModal("home")}>
+                            <Link className="btn btn-secondary" variant="button" underline="none"
+                                  component={RouterLink} onClick={this.openModal("home")}>
                                 Cancel and return to home
                             </Link>
-                            <Link className="btn btn-secondary" variant="button" underline="none" color="default"
-                                  onClick={this.openModal("cancel")}>
+                            <Link className="btn btn-secondary" variant="button" underline="none"
+                                  component={RouterLink} onClick={this.openModal("cancel")}>
                                 Cancel preprocessing
                             </Link>
                         </ButtonGroup>
@@ -273,7 +274,7 @@ class BuildProgressMenu extends Component {
                                 // color="defaultcolor="secondary"
                                 underline="none"
                                 component={RouterLink}
-                                to={root}
+                                // to={root}
                                 onClick={this.goToHome}>
                                 Restart with another dataset
                             </Link>
