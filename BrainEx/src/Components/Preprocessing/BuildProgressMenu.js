@@ -3,7 +3,7 @@ import {Link as RouterLink} from "react-router-dom";
 import "../../Stylesheets/BuildProgressMenu.css";
 import {
     Link, ButtonGroup, Typography, LinearProgress,
-    Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle
+    Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
 } from '@material-ui/core';
 import $ from "jquery";
 import {query_page, data_exp, build_options, root} from "../../data/default_values";

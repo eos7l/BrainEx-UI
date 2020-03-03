@@ -2,16 +2,23 @@
     height: calc(100% - 64px); /*64px is height of header*/
 }
 
-.MuiTypography-root .MuiTypography-h2 .MuiTypography-body1 {
-    font-size: 120% !important;
+.MuiTypography-h1, .MuiTypography-h4, .MuiTypography-h3, .MuiButton-root, .MuiLink-root, .MuiTypography-root, .MuiTypography-h2, .MuiTypography-body1, .MuiFormLabel-root, .MuiFormControlLabel-label, .MuiInputLabel-root, .MuiTypography-h2, .MuiTypography-body1 {
+    font-size: large !important;
 }
 
 /*.MuiTypography-h2 .MuiTypography-body1{*/
 /*    font-size: 500% !important;*/
 /*}*/
 
-.MuiFormControlLabel-label.MuiFormLabel-root .MuiInputLabel-root {
-    font-size: 110% !important;
+.table-container {
+    max-height: 440px;
+}
+
+.table-null-content {
+    align-content: start !important;
+    vertical-align: top !important;
+    align-items: start !important;
+    align-self: start !important;
 }
 
 .row {
@@ -108,9 +115,9 @@
     width: 60%;
 }
 
-.MuiButton-root, .MuiLink-root {
-    font-size: 1em !important;
-}
+/*.MuiButton-root, .MuiLink-root {*/
+/*    font-size: 1em !important;*/
+/*}*/
 
 .MuiButton-root.btn-primary, .MuiLink-root.btn-primary {
     background-color: #0f5298;
@@ -140,7 +147,7 @@
     color: red;
 }
 
-.home-content table {
+/*.home-content table {
 	display: table;
 }
 .home-content table tr {
@@ -148,15 +155,20 @@
 }
 .home-content table tr td {
 	display: block;
-}
+}*/
 
 .right .home-content {
 
 }
 .csv-viewer {
-
+    margin-top: -5%;
+    max-width: 935px;
+    margin-bottom: 5%;
+    margin-left: 3%;
+    margin-right: 2%;
+    max-height: inherit;
 }
 
-.csv-content {
-
+.save-btn {
+    margin-top: 15px;
 }

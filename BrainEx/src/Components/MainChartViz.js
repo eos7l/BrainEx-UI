@@ -35,10 +35,10 @@ export default class MainChartViz extends React.Component {
 
     render() {
         if (!this.state.lineData) return null;
-        var allFields = Object.keys(this.state.lineData[0]);
-        var firstCol = allFields[0]; //gives the column name of the first column, which is the string "Timestamp"
-        var numCol = allFields.length; //gives the total number of columns in the lineData, including the first non-lineData column
-        var sliced = allFields.slice(1, numCol); //gives all the column names of lineData, excluding the first column
+        let allFields = Object.keys(this.state.lineData[0]);
+        let firstCol = allFields[0]; //gives the column name of the first column, which is the string "Timestamp"
+        let numCol = allFields.length; //gives the total number of columns in the lineData, including the first non-lineData column
+        let sliced = allFields.slice(1, numCol); //gives all the column names of lineData, excluding the first column
         return (
             <div>
                 <LineChart width={750} height={460} data={this.state.lineData}
