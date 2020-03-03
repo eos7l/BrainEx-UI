@@ -67,6 +67,11 @@ export default function Dashboard(props) {
     const [queryResults, setResults] = useState(() => {});
     const [isQuerying, setQuerying] = useState(false);
     const [statistics, setStats] = useState({});
+    const [max_matches, set_max] = useState(props.max_matches);
+
+    useEffect(() => {
+        console.log(max_matches, "dashboard received matches!");
+    }, [max_matches]);
 
     useEffect(() => {
         // console.log("parent received data!");
@@ -123,7 +128,12 @@ export default function Dashboard(props) {
                             {/* filters */}
                             <Grid item lg={12}>
                                 <Paper className={classes.paper}>
-                                    <Filter sendStats={receiveStats} sendProgress={receiveQueryProgress} sendResults={receiveResults} loi_min={props.loi_min} loi_max={props.loi_max}/>
+                                    <Filter max_matches={max_matches}
+                                            sendStats={receiveStats}
+                                            sendProgress={receiveQueryProgress}
+                                            sendResults={receiveResults}
+                                            loi_min={props.loi_min}
+                                            loi_max={props.loi_max}/>
                                 </Paper>
                             </Grid>
                             {/*stats*/}

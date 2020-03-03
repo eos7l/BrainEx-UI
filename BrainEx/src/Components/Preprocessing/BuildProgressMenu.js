@@ -26,7 +26,8 @@ class BuildProgressMenu extends Component {
             mode: null,
             isPreprocessing: true,
             preprocessed_dataset: null,
-            isDownloading: false
+            isDownloading: false,
+            num_sequences: 0
         };
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
@@ -39,10 +40,12 @@ class BuildProgressMenu extends Component {
             .then((response) => {
                 console.log(response);
                 this.setState({
-                    isPreprocessing: false
+                    isPreprocessing: false,
+                    num_sequences: response.data.num_sequences
                     // preprocessed_dataset: response.data.data
                 }, () => {
-                    console.log(response.data);
+                    console.log(response.data.message);
+                    console.log(this.state.num_sequences, "num_seq in state");
                 })
             })
             .catch(function (error) {
@@ -293,7 +296,8 @@ class BuildProgressMenu extends Component {
                                     pathname: `${query_page}`,
                                     state: {
                                         loi_max: this.state.loi_max,
-                                        loi_min: this.state.loi_min
+                                        loi_min: this.state.loi_min,
+                                        max_matches: this.state.num_sequences
                                     }
                                 }}>
                                 Find Similar Sequences

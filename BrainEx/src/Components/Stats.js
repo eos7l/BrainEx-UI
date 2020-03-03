@@ -26,8 +26,8 @@ export default class Stats extends Component {
         }
     }
 
-    componentDidUpdate(nextProps, nextState, ss) {
-        if (nextProps.statistics !== this.props.statistics) {
+    componentDidUpdate(prevProps, prevState, ss) {
+        if (prevProps.statistics !== this.props.statistics) {
             this.setState({
                 stats: this.props.statistics
             })

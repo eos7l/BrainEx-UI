@@ -211,7 +211,12 @@ def build():
             loi = [float(loiA[0]), float(loiA[1])]
             similarity_threshold = float(similarity_threshold)
             brainexDB.build(st=similarity_threshold, dist_type=dist_type, loi=loi)
-            return "Preprocessed!"
+            num_sequences = brainexDB.get_num_subsequences()
+            returnDict = {
+                "num_sequences": num_sequences,
+                "message": "Preprocessed!"
+            }
+            return jsonify(returnDict)
         except Exception as e:
             return (str(e), 400)
 
