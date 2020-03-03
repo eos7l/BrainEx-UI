@@ -76,7 +76,8 @@ class NavBar extends Component {
     };
 
     goToQuery = (e) => {
-        this.props.history.push(query_page);
+        e.preventDefault();
+        // this.props.history.push(query_page);
     };
 
     handleClick = (e) => {
@@ -101,23 +102,23 @@ class NavBar extends Component {
                                 <Typography className="nav_text">Home</Typography>
                             </Button>
                         </li>
-                        <div className="nav-item">
-                            <Button aria-controls="simple-menu" aria-haspopup="true" onClick={this.handleClick}>
-                                <Typography className="nav_text">Explore Data</Typography>
-                            </Button>
-                            <StyledMenu id="simple-menu" anchorEl={this.state.curr_target} keepMounted open={Boolean(this.state.curr_target)} onClose={this.handleClose}>
-                                <MenuItem onClick={this.handleClose}>
-                                        <Link className="nav-link" to={data_exp}>
-                                            <Typography className="dd_text">Explore Raw Data</Typography>
-                                        </Link>
-                                </MenuItem>
-                                <MenuItem onClick={this.handleClose}>
-                                        <Link className="nav-link" to={cluster_exp}>
-                                            <Typography className="dd_text">Explore Clustered Data</Typography>
-                                        </Link>
-                                </MenuItem>
-                            </StyledMenu>
-                        </div>
+                        {/*<div className="nav-item">*/}
+                        {/*    <Button aria-controls="simple-menu" aria-haspopup="true" onClick={this.handleClick}>*/}
+                        {/*        <Typography className="nav_text">Explore Data</Typography>*/}
+                        {/*    </Button>*/}
+                        {/*    <StyledMenu id="simple-menu" anchorEl={this.state.curr_target} keepMounted open={Boolean(this.state.curr_target)} onClose={this.handleClose}>*/}
+                        {/*        <MenuItem onClick={this.handleClose}>*/}
+                        {/*                <Link className="nav-link" to={data_exp}>*/}
+                        {/*                    <Typography className="dd_text">Explore Raw Data</Typography>*/}
+                        {/*                </Link>*/}
+                        {/*        </MenuItem>*/}
+                        {/*        <MenuItem onClick={this.handleClose}>*/}
+                        {/*                <Link className="nav-link" to={cluster_exp}>*/}
+                        {/*                    <Typography className="dd_text">Explore Clustered Data</Typography>*/}
+                        {/*                </Link>*/}
+                        {/*        </MenuItem>*/}
+                        {/*    </StyledMenu>*/}
+                        {/*</div>*/}
                         <li className="nav-item">
                             <Button onClick={this.goToQuery}>
                                 <Typography className="nav_text">Find Similar Sequences</Typography>
