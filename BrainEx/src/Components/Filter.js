@@ -254,7 +254,7 @@ export default function Filter(props) /*extends Component*/ {
                                 size="small"
                                 variant="filled"
                                 type="number"
-                                helperText={(numMatches > max_matches) ? ("Error: Value larger than max: " + max_matches) : ("Max matches possible: " + max_matches)}
+                                helperText={(numMatches > max_matches) ? ("Error: Value larger than max: " + max_matches) : ("Max number of matches possible: " + max_matches)}
                                 inputProps = {{
                                     step: 1,
                                     min: 1,
