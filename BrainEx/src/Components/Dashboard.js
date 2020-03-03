@@ -137,7 +137,7 @@ export default function Dashboard(props) {
                             <LoadingOverlay
                                 active={isQuerying}
                                 spinner
-                                text='Loading your content...'>
+                                text='Querying in progress...'>
                                 <Grid item lg={12}>
                                     {/* MainChart */}
                                     <Paper className={fixedHeightPaper}>
