@@ -14,6 +14,7 @@ import Filter from './Filter.js'
 import ChartData from './ChartData.js'
 import Chart from './Chart.js'
 import Stats from './Stats.js'
+import LoadingOverlay from 'react-loading-overlay';
 
 function Copyright() {
     return (
@@ -64,28 +65,50 @@ export default function Dashboard(props) {
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
     const [receivedData, setDataState] = useState(() => []);
     const [queryResults, setResults] = useState(() => {});
-    // const [receivedData, setDataState] = useState(() => []);
-    // const [lineCol,setLineColorState] = useState(()=>[]);
+    const [isQuerying, setQuerying] = useState(false);
+    const [statistics, setStats] = useState({});
+    const [max_matches, set_max] = useState(props.max_matches);
 
     useEffect(() => {
-        console.log("parent received data!");
-        console.log(receivedData);
+        console.log(max_matches, "dashboard received matches!");
+    }, [max_matches]);
+
+    useEffect(() => {
+        // console.log("parent received data!");
+        // console.log(receivedData);
     }, [receivedData]);
 
     useEffect(() => {
-        console.log("parent received results!");
-        console.log(queryResults);
+        // console.log("parent received results!");
+        // console.log(queryResults);
     }, [queryResults]);
 
+    useEffect(() => {
+        console.log("isQuerying set to this value");
+        console.log(isQuerying);
+    }, [isQuerying]);
+
+    useEffect(() => {
+        console.log(statistics, "stats have been received");
+    }, [statistics]);
+
     function receiveData(tableData) {
-        console.log("calling receiveData");
+        // console.log("calling receiveData");
         setDataState(tableData);
     }
 
     function receiveResults(results) {
-        console.log("calling receiveResults");
-        console.log(results);
+        // console.log("calling receiveResults");
+        // console.log(results);
         setResults(results);
+    }
+
+    function receiveQueryProgress(newProgress) {
+        setQuerying(newProgress);
+    }
+
+    function receiveStats(newStats) {
+        setStats(newStats);
     }
 
     return (
@@ -105,22 +128,32 @@ export default function Dashboard(props) {
                             {/* filters */}
                             <Grid item lg={12}>
                                 <Paper className={classes.paper}>
-                                    <Filter sendResults={receiveResults} loi_min={props.loi_min} loi_max={props.loi_max}/>
+                                    <Filter max_matches={max_matches}
+                                            sendStats={receiveStats}
+                                            sendProgress={receiveQueryProgress}
+                                            sendResults={receiveResults}
+                                            loi_min={props.loi_min}
+                                            loi_max={props.loi_max}/>
                                 </Paper>
                             </Grid>
                             {/*stats*/}
                             <Grid item lg={12}>
                                 <Paper className={classes.paper}>
-                                    <Stats/>
+                                    <Stats statistics={statistics}/>
                                 </Paper>
                             </Grid>
                         </Grid>
                         <Grid item container spacing={2} direction="row" lg={8}>
+
                             <Grid item lg={12}>
-                                {/* MainChart */}
-                                <Paper className={fixedHeightPaper}>
-                                    <ChartData data={receivedData}/>
-                                </Paper>
+                                <LoadingOverlay
+                                    active={isQuerying}
+                                    spinner
+                                    text='Querying in progress...'>
+                                    <Paper className={fixedHeightPaper}>
+                                        <ChartData data={receivedData}/>
+                                    </Paper>
+                                </LoadingOverlay>
                             </Grid>
                             <Grid item lg={12}>
                                 {/* Table */}

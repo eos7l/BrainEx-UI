@@ -186,7 +186,8 @@ class BuildOptions extends Component {
         this.props.history.push(build_progress, {
             form_data: form_data,
             loi_min: this.state.loi_val[0],
-            loi_max: this.state.loi_val[1]
+            loi_max: this.state.loi_val[1],
+            old_max: this.state.loi_max
         }); // proceed to next page once information has been passed
     };
 
@@ -235,10 +236,10 @@ class BuildOptions extends Component {
                                     value={this.state.distance_val}
                                     onChange={this.update_distance}
                                 >
-                                    <MenuItem value="eu">Dynamic Time Warping</MenuItem>
-                                    <MenuItem value="ma">Warped Manhattan</MenuItem>
-                                    <MenuItem value="mi">Warped Minkowski</MenuItem>
-                                    <MenuItem value="ch">Warped Chebyshev</MenuItem>
+                                    <MenuItem value="eu">Euclidean with Dynamic Time Warping</MenuItem>
+                                    <MenuItem value="ma">Manhattan with Dynamic Time Warping</MenuItem>
+                                    <MenuItem value="min">Minkowski with Dynamic Time Warping</MenuItem>
+                                    <MenuItem value="ch">Chebyshev with Dynamic Time Warping</MenuItem>
                                 </Select>
                             </td>
                         </tr>
@@ -280,7 +281,7 @@ class BuildOptions extends Component {
                             <td className="form_input is_range">
                                 <TextField
                                     label="start"
-                                    id="loi"
+                                    id="loi1"
                                     inputProps={{
                                         step: 0.1,
                                         min: 1,
@@ -301,7 +302,7 @@ class BuildOptions extends Component {
                                 />
                                 <Input
                                     label="end"
-                                    id="loi"
+                                    id="loi2"
                                     inputProps={{
                                         step: 0.1,
                                         min: 1,

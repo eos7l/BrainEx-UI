@@ -10,8 +10,8 @@ export default function TabledSeqThnl(props) {
         for (let i = 0; i<array.length;i++) {
             JSONarray.push({"seqLength": i.toString(), "chanVal": array[i]})
         }
-        console.log("JSONarray");
-        console.log(JSONarray);
+        // console.log("JSONarray");
+        // console.log(JSONarray);
         return JSONarray;
     }
 

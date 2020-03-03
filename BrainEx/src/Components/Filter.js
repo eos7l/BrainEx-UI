@@ -1,12 +1,14 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState, useEffect, Component} from 'react';
 import Divider from "@material-ui/core/Divider";
 import Title from "./Title";
 import clsx from 'clsx';
 import { Range } from 'rc-slider';
 import 'rc-slider/assets/index.css';
-import { makeStyles, Button, ButtonGroup, FormControl,
+import {
+    makeStyles, Button, ButtonGroup, FormControl,
     FormGroup, FormControlLabel, Checkbox, Typography,
-    Slider, Input, Grid, InputAdornment, TextField } from "@material-ui/core";
+    Slider, Input, Grid, InputAdornment, TextField, CircularProgress
+} from "@material-ui/core";
 import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import axios from 'axios';
@@ -33,13 +35,13 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-
-export default function Filter(props) {
+export default function Filter(props) /*extends Component*/ {
     const classes = useStyles();
+
     // range slider
-    const [rangeVal, setRangeVal] = useState([props.loi_min, props.loi_max]);
-    const [startVal, setStartVal] = useState(props.loi_min);
-    const [endVal, setEndVal] = useState(props.loi_max);
+    // const [rangeVal, setRangeVal] = useState([props.loi_min, props.loi_max]);
+    // const [startVal, setStartVal] = useState(props.loi_min);
+    // const [endVal, setEndVal] = useState(props.loi_max);
     // establish constants for min and max
     // const MIN = props.loi_min;
     // const MAX = props.loi_max;
@@ -52,11 +54,20 @@ export default function Filter(props) {
     // query results
     const [queryResults, setQueryResults] = useState(null);
 
+    const [statistics, setStats] = useState({});
+    const [max_matches, setMaxMatches] = useState(props.max_matches);
+
     useEffect(() => {
-        console.log("results received");
-        console.log(queryResults);
+        // console.log("results received");
+        // console.log(queryResults);
         props.sendResults(queryResults);
-    }, [queryResults]);
+        props.sendStats(statistics);
+        props.sendProgress(false);
+    }, [queryResults, statistics]);
+
+    useEffect(() => {
+        setMaxMatches(props.max_matches);
+    });
 
     /*/!*update the range values for loi range*!/
     function handleRangeChange(event) {
@@ -95,23 +106,37 @@ export default function Filter(props) {
     };*/
 
     const handleMatchChange = (e) => {
-        console.log(e.target.value);
+        // console.log(e.target.value);
+        // this.setState({
+        //     numMatches: e.target.value
+        // });
         setNumMatches(e.target.value);
     };
 
     const handleOverlapChange = (e) => {
-        console.log(e.target.value);
+        // console.log(e.target.value);
+        // this.setState({
+        //     overlapVal: e.target.value
+        // });
         setOverlapVal(e.target.value);
     };
 
     const handleClearInput = () => {
-        setNumMatches('');
-        setOverlapVal('');
+        // this.setState({
+        //     numMatches: '',
+        //     overlapVal: '',
+        //     excludeSameID: null
+        // });
+        setNumMatches(0);
+        setOverlapVal(0);
         setExcludeID(null);
     };
 
     const handleExcludeIDChange = (e) => {
-        console.log(e.target.checked);
+        // console.log(e.target.checked);
+        // this.setState({
+        //     excludeID: e.target.checked
+        // });
         setExcludeID(e.target.checked);
     };
 
@@ -127,22 +152,47 @@ export default function Filter(props) {
         form.append("best_matches", best_matches);
         form.append("overlap", overlap);
         form.append("excludeS", excludeS);
-        console.log(form);
+        // console.log(form);
+        props.sendProgress(true); // querying is now in progress
         axios.post('http://localhost:5000/query', form)
-            .then(function (response) {
-                console.log(response.data['message']);
-                console.log(response.data);
-                setQueryResults(JSON.parse(response.data['resultJSON']));
+            .then((response) => {
+                console.log(response);
+                console.log(response.data.message);
+                // let queryResponse = response.data;
+                let query_results = JSON.parse(response.data['resultJSON']);
+                let stats = {
+                    dataMax: response.data.dataMax,
+                    dataMean: response.data.dataMean,
+                    dataMedian: response.data.dataMedian,
+                    dataMin: response.data.dataMin,
+                    dataSd: response.data.dataSd,
+                    lenMax: response.data.lenMax,
+                    lenMean: response.data.lenMean,
+                    lenMedian: response.data.lenMedian,
+                    lenMin: response.data.lenMin,
+                    lenSd: response.data.lenSd
+                };
+                // this.setState({
+                //     queryResults: queryResults,
+                //     statistics: stats
+                // }, () => {
+                //     this.props.sendProgress(false); // query results have been returned
+                //     this.props.sendResults(this.state.queryResults);
+                //     this.props.sendStats(this.state.statistics);
+                // });
+                setQueryResults(query_results);
+                setStats(stats);
             })
             .catch(function (error) {
                 console.log(error);
             });
     };
 
+    // render() {
     return (
         <React.Fragment>
             <React.Fragment>
-                <Title>Query Options</Title>
+               <Title>Query Options</Title>
                 <Divider/>
                 <form className={classes.root} noValidate autoComplete="off">
                     <FormControl component="fieldset">
@@ -201,11 +251,21 @@ export default function Filter(props) {
                                 // multiline
                                 size="small"
                                 variant="filled"
-                                inputProps={{
+                                InputProps = {{
+                                    inputProps: {
+                                         step: 1,
+                                    min: 1,
+                                    max: max_matches,
+                                    type: 'number'
+                                    }
+                                }}
+                                /*inputProps={{
                                     step: 1,
                                     min: 1,
+                                    max: max_matches,
                                     type: 'number'
-                                }}/>
+                                }}*/
+                            />
                             {/* OVERLAP FIELD */}
                             <TextField
                                 required
@@ -234,7 +294,7 @@ export default function Filter(props) {
                                                    style={{ width: 36, height: 36 }}
                                                    icon={<CheckBoxOutlineBlankIcon style={{ fontSize: 20 }} />}
                                                    checkedIcon={<CheckBoxIcon style={{ fontSize: 20 }} />}/>}
-                                label="Exclude subsequence matches from current sequence"
+                                label="Exclude subsequence matches from current query sequence"
                                 labelPlacement="end"
                             />
                         </FormGroup>
@@ -243,10 +303,10 @@ export default function Filter(props) {
                         <ButtonGroup>
                             <Button type="submit" size="medium" variant="contained" color="primary"
                                     onClick={handleQuery}>
-                                Apply
+                                Submit Query
                             </Button>
                             <Button size="medium" variant="contained" color="default" onClick={handleClearInput}>
-                                Clear
+                                Clear Results {/*todo dialog letting user know that this will erase the table and graph*/}
                             </Button>
                         </ButtonGroup>
                     </div>
@@ -254,4 +314,5 @@ export default function Filter(props) {
             </React.Fragment>
         </React.Fragment>
     );
+    // }
 }

@@ -12,6 +12,7 @@ import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
 import {cluster_exp, data_exp, query_page, root} from "../../data/default_values";
 import axios from "axios";
+import {store} from "react-notifications-component";
 
 const StyledMenu = withStyles({
   paper: {
@@ -51,6 +52,22 @@ class NavBar extends Component {
       axios.post('http://localhost:5000/restart')
           .then((response) => {
               console.log(response);
+              if (response.status === 200) {
+                  store.addNotification({
+                        title: "Spark session ended",
+                        message: response.data,
+                        type: "info",
+                        insert: "top",
+                        container: "bottom-left",
+                        animationIn: ["animated", "fadeIn"],
+                        animationOut: ["animated", "fadeOut"],
+                        dismiss: {
+                            duration: 5000,
+                            pauseOnHover: true,
+                            onScreen: true
+                        }
+                    });
+              }
           })
           .catch(function (error) {
               console.log(error);
