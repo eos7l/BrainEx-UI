@@ -280,53 +280,53 @@ def complete_query():
             exclude = False
         else:
             exclude = True
-        # try:
-        query_result = brainexDB.query(query=querySeq, best_k=best_matches, exclude_same_id=exclude, overlap=overlap)
-        query_result.reverse()
-        sims = [i[0] for i in query_result]
-        seqs = [i[1] for i in query_result]
-        for i in seqs:
-            i = i.fetch_data(brainexDB.data_original)
-        ids = [i for i in range(1, best_matches + 1)]
-        sequence_id = [i.seq_id for i in seqs]
-        start = [i.start for i in seqs]
-        end = [i.end for i in seqs]
-        data = [i.data.tolist() for i in seqs]
-        pandasQ = pd.DataFrame(
-            {"similarity": sims, "ID": ids, "start": start, "end": end, "data": data, "sequence_id": sequence_id})
-        allData = []
-        for elem in pandasQ['data']:
-            for e in elem:
-                allData.append(e)
-        dataMin = min(allData)
-        dataMax = max(allData)
-        dataSd = np.std(allData)
-        dataMean = sum(allData) / len(allData)
-        dataMedian = np.median(allData)
-        lenP = pandasQ['end'] - pandasQ['start']
-        lenMin = lenP.min()
-        lenMax = lenP.max()
-        lenSd = lenP.std()
-        lenMean = lenP.mean()
-        lenMedian = lenP.median()
-        json = pandasQ.to_json(orient="index")
-        returnDict = {
-            "message": "Query results.",
-            "resultJSON": json,
-            "dataMin": float(dataMin),
-            "dataMax": float(dataMax),
-            "dataSd": float(dataSd),
-            "dataMean": float(dataMean),
-            "dataMedian": float(dataMedian),
-            "lenMin": float(lenMin),
-            "lenMax": float(lenMax),
-            'lenSd': float(lenSd),
-            'lenMean': float(lenMean),
-            'lenMedian': float(lenMedian)
-        }
-        return jsonify(returnDict)
-        # except Exception as e:
-        #     return (str(e), 400)
+        try:
+            query_result = brainexDB.query(query=querySeq, best_k=best_matches, exclude_same_id=exclude, overlap=overlap)
+            query_result.reverse()
+            sims = [i[0] for i in query_result]
+            seqs = [i[1] for i in query_result]
+            for i in seqs:
+                i = i.fetch_data(brainexDB.data_original)
+            ids = [i for i in range(1, best_matches + 1)]
+            sequence_id = [i.seq_id for i in seqs]
+            start = [i.start for i in seqs]
+            end = [i.end for i in seqs]
+            data = [i.data.tolist() for i in seqs]
+            pandasQ = pd.DataFrame(
+                {"similarity": sims, "ID": ids, "start": start, "end": end, "data": data, "sequence_id": sequence_id})
+            allData = []
+            for elem in pandasQ['data']:
+                for e in elem:
+                    allData.append(e)
+            dataMin = min(allData)
+            dataMax = max(allData)
+            dataSd = np.std(allData)
+            dataMean = sum(allData) / len(allData)
+            dataMedian = np.median(allData)
+            lenP = pandasQ['end'] - pandasQ['start']
+            lenMin = lenP.min()
+            lenMax = lenP.max()
+            lenSd = lenP.std()
+            lenMean = lenP.mean()
+            lenMedian = lenP.median()
+            json = pandasQ.to_json(orient="index")
+            returnDict = {
+                "message": "Query results.",
+                "resultJSON": json,
+                "dataMin": float(dataMin),
+                "dataMax": float(dataMax),
+                "dataSd": float(dataSd),
+                "dataMean": float(dataMean),
+                "dataMedian": float(dataMedian),
+                "lenMin": float(lenMin),
+                "lenMax": float(lenMax),
+                'lenSd': float(lenSd),
+                'lenMean': float(lenMean),
+                'lenMedian': float(lenMedian)
+            }
+            return jsonify(returnDict)
+        except Exception as e:
+            return (str(e), 400)
 
 
 @application.route('/saveDataOutput', methods=['GET', 'POST'])

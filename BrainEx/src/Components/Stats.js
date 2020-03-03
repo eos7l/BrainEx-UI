@@ -47,7 +47,7 @@ export default class Stats extends Component {
                 <Title>Statistics</Title>
                 <Divider/>
                 <List aria-label="primary">
-                    {console.log(this.state.stats)}
+                    {/*{console.log(this.state.stats)}*/}
                     {(Object.keys(this.state.stats).length !== 0) ? (
                         Object.keys(this.state.stats).map(statKey => {
                             return (

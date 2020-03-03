@@ -73,10 +73,8 @@ export default class Filter extends Component {
     // const [maxMatches, setMaxMatches] = useState(props.max_matches);
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if ((prevProps.queryResults !== this.props.queryResults) && (prevProps.statistics !== this.props.statistics)) {
-            this.props.sendResults(this.state.queryResults);
-            this.props.sendStats(this.props.statistics);
-        }
+        // this.props.sendResults(this.state.queryResults);
+        // this.props.sendStats(this.state.statistics);
         if (prevProps.max_matches !== this.props.max_matches) {
             this.setState({
                 max_matches: this.props.max_matches
@@ -187,9 +185,11 @@ export default class Filter extends Component {
         // console.log(form);
         this.props.sendProgress(true); // querying is now in progress
         axios.post('http://localhost:5000/query', form)
-            .then(function (response) {
-                console.log(response.data['message']);
-                // console.log(response.data);
+            .then((response) => {
+                console.log(response);
+                console.log(response.data.message);
+                // let queryResponse = response.data;
+                let queryResults = JSON.parse(response.data['resultJSON']);
                 let stats = {
                     dataMax: response.data.dataMax,
                     dataMean: response.data.dataMean,
@@ -203,10 +203,12 @@ export default class Filter extends Component {
                     lenSd: response.data.lenSd
                 };
                 this.setState({
-                    queryResults: JSON.parse(response.data['resultJSON']),
+                    queryResults: queryResults,
                     statistics: stats
                 }, () => {
                     this.props.sendProgress(false); // query results have been returned
+                    this.props.sendResults(this.state.queryResults);
+                    this.props.sendStats(this.state.statistics);
                 });
                 // setQueryResults(JSON.parse(response.data['resultJSON']));
                 // setStats(stats);

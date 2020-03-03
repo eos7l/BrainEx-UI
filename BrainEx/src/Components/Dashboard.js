@@ -144,23 +144,23 @@ export default function Dashboard(props) {
                             </Grid>
                         </Grid>
                         <Grid item container spacing={2} direction="row" lg={8}>
-                            <LoadingOverlay
-                                active={isQuerying}
-                                spinner
-                                text='Querying in progress...'>
-                                <Grid item lg={12}>
-                                    {/* MainChart */}
+
+                            <Grid item lg={12}>
+                                <LoadingOverlay
+                                    active={isQuerying}
+                                    spinner
+                                    text='Querying in progress...'>
                                     <Paper className={fixedHeightPaper}>
                                         <ChartData data={receivedData}/>
                                     </Paper>
-                                </Grid>
-                                <Grid item lg={12}>
-                                    {/* Table */}
-                                    <Paper className={fixedHeightPaper}>
-                                        <DataTable queryResults={queryResults} sendData={receiveData}/>
-                                    </Paper>
-                                </Grid>
-                            </LoadingOverlay>
+                                </LoadingOverlay>
+                            </Grid>
+                            <Grid item lg={12}>
+                                {/* Table */}
+                                <Paper className={fixedHeightPaper}>
+                                    <DataTable queryResults={queryResults} sendData={receiveData}/>
+                                </Paper>
+                            </Grid>
                         </Grid>
                     </Grid>
                     <Box pt={4}>
