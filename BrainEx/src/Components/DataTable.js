@@ -15,6 +15,8 @@ import {top_color, bottom_color} from '../data/default_values';
 import TabledSeqThnl from "./TabledSeqThnl"; // thumbnail component
 import SaveIcon from '@material-ui/icons/Save';
 import TableContainer from "@material-ui/core/TableContainer";
+import axios from "axios";
+import { store } from 'react-notifications-component';
 
 // generates x number of unique hex values between two given colors (generates a proportional gradient)
 function generateColors(numColors, top_color, bottom_color) {
@@ -142,6 +144,31 @@ export default class DataTable extends Component {
         return table;
     }
 
+    saveButton = (e) => {
+        let data_form = new FormData();
+        data_form.append("data", this.state.queryResults.toString())
+        axios.post('http://localhost:5000/saveDataOutput', data_form)
+            .then((response) => {
+                console.log(response);
+                store.addNotification({
+                    title: "Download Successful",
+                    message: response.data,
+                    type: "success",
+                    insert: "top",
+                    container: "bottom-center",
+                    animationIn: ["animated", "fadeIn"],
+                    animationOut: ["animated", "fadeOut"],
+                    dismiss: {
+                        duration: 10000,
+                        pauseOnHover: true,
+                        onScreen: true
+                    }
+                })
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    };
     render() {
         // const classes = useStyles();
         return (
@@ -206,6 +233,7 @@ export default class DataTable extends Component {
                     className='save-btn'
                     // className={classes.button}
                     startIcon={<SaveIcon/>}
+                    onClick={this.saveButton}
                 >
                     Save
                 </Button>
@@ -218,5 +246,3 @@ export default class DataTable extends Component {
         );
     }
 }
-
-
