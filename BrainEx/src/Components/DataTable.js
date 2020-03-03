@@ -223,18 +223,18 @@ export default class DataTable extends Component {
                             )}
                         </TableBody>
                     </Table>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        size="large"
+                        className='save-btn'
+                        disabled={this.state.queryResults.length === 0}
+                        // className={classes.button}
+                        startIcon={<SaveIcon/>}
+                        onClick={this.saveButton}>
+                        Save
+                    </Button>
                 </TableContainer>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    size="large"
-                    className='save-btn'
-                    // className={classes.button}
-                    startIcon={<SaveIcon/>}
-                    onClick={this.saveButton}
-                >
-                    Save
-                </Button>
                 {/*<div className={classes.seeMore}>*/}
                 {/*  <Link color="primary" href="#" onClick={preventDefault}>*/}
                 {/*    Show more sequences*/}
