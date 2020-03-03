@@ -251,12 +251,21 @@ export default function Filter(props) /*extends Component*/ {
                                 // multiline
                                 size="small"
                                 variant="filled"
-                                inputProps={{
+                                InputProps = {{
+                                    inputProps: {
+                                         step: 1,
+                                    min: 1,
+                                    max: max_matches,
+                                    type: 'number'
+                                    }
+                                }}
+                                /*inputProps={{
                                     step: 1,
                                     min: 1,
                                     max: max_matches,
                                     type: 'number'
-                                }}/>
+                                }}*/
+                            />
                             {/* OVERLAP FIELD */}
                             <TextField
                                 required

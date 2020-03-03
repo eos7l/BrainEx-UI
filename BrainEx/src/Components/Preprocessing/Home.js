@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {Link as RouterLink} from "react-router-dom";
 import '../../Stylesheets/Home.css'
-import { preprocessed_files } from "../../data/dummy_data";
 import {
     Button,
     Link,
@@ -13,7 +12,14 @@ import {
     Dialog, TextField
 } from '@material-ui/core';
 import FormData from 'form-data';
-import {build_progress, query_page, select_new_dataset, default_nw, default_dm, default_mrm} from "../../data/default_values";
+import {
+    query_page,
+    select_new_dataset,
+    default_nw,
+    default_dm,
+    default_mrm,
+    default_matches
+} from "../../data/default_values";
 import axios from 'axios'
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControl from "@material-ui/core/FormControl";
@@ -29,7 +35,8 @@ class Home extends Component {
             open: false,
             num_workers: default_nw,
             dm_val: default_dm,
-            mrm_val: default_mrm
+            mrm_val: default_mrm,
+            max_matches: default_matches
         };
         this.onChangeHandler = this.onChangeHandler.bind(this);
         this.onClickHandler = this.onClickHandler.bind(this);
@@ -76,7 +83,8 @@ class Home extends Component {
             .then((response) => {
                 console.log(response);
                 this.setState({
-                    open: true
+                    open: true,
+                    max_matches: response.data.max_matches
                 });
             })
             .catch((error) => {
@@ -92,7 +100,7 @@ class Home extends Component {
     };
 
     goToQuery = () => {
-        this.props.history.push(query_page);
+        this.props.history.push(query_page, {max_matches: this.state.max_matches});
     };
 
     onChangeHandler = (e) => {

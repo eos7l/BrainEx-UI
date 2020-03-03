@@ -148,7 +148,12 @@ def setFilePro():
             # else:
             #     brainexDB = from_db(uploadPath + "toDel\\most_recent_Data", num_worker=num_worker)
             shutil.rmtree(uploadPath + "toDel")
-            return "File is set!"
+            max_matches = brainexDB.get_num_subsequences()
+            returnDict = {
+                "message": "File is set!",
+                "max_matches": max_matches
+            }
+            return jsonify(returnDict)
         except Exception as e:
             return (str(e), 400)
 
