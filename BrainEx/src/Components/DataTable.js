@@ -1,5 +1,4 @@
-import React, {Component, useState, useEffect, Fragment} from 'react';
-import {makeStyles} from '@material-ui/core/styles';
+import React, {Component, Fragment} from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -12,7 +11,7 @@ import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import Rainbow from 'rainbowvis.js/rainbowvis.js';
 import Button from '@material-ui/core/Button';
 import {top_color, bottom_color} from '../data/default_values';
-import TabledSeqThnl from "./TabledSeqThnl"; // thumbnail component
+import TabledSeqThnl from "./TabledSeqThnl";
 import SaveIcon from '@material-ui/icons/Save';
 import TableContainer from "@material-ui/core/TableContainer";
 import axios from "axios";
@@ -53,9 +52,6 @@ export default class DataTable extends Component {
             this.setState({
                 queryResults: (this.props.queryResults) ? this.createTable(this.props.queryResults) : [],
                 checkboxValues: (this.props.queryResults) ? this.initializeCheckboxValues(this.props.queryResults) : []
-            }, () => {
-                // console.log("queryResults received by DataTable");
-                // console.log(this.state.queryResults);
             });
         }
     }
@@ -146,7 +142,9 @@ export default class DataTable extends Component {
 
     saveButton = (e) => {
         let data_form = new FormData();
-        data_form.append("data", this.state.queryResults.toString())
+        for (let i=0; i<this.state.queryResults.length; i++) {
+            data_form.append(i.toString(), JSON.stringify(this.state.queryResults[i]));
+        }
         axios.post('http://localhost:5000/saveDataOutput', data_form)
             .then((response) => {
                 console.log(response);
