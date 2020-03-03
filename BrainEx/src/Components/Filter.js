@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState,useEffect } from 'react';
 import Divider from "@material-ui/core/Divider";
 import Title from "./Title";
 import clsx from 'clsx';
@@ -55,12 +55,20 @@ export default function Filter(props) {
     const [queryResults, setQueryResults] = useState(null);
 
     const [isQueryIP, setIsQueryIP] = useState(false);
+    const [statistics, setStats] = useState({});
 
     useEffect(() => {
-        console.log("results received");
-        console.log(queryResults);
+        // console.log("results received");
+        // console.log(queryResults);
         props.sendResults(queryResults);
-    }, [queryResults]);
+        props.sendStats(statistics);
+    }, [queryResults, statistics]);
+
+    /*useEffect(() => {
+       console.log("stats received");
+       console.log(statistics);
+       props.sendStats(statistics);
+    }, [statistics]);*/
 
     /*/!*update the range values for loi range*!/
     function handleRangeChange(event) {
@@ -99,12 +107,12 @@ export default function Filter(props) {
     };*/
 
     const handleMatchChange = (e) => {
-        console.log(e.target.value);
+        // console.log(e.target.value);
         setNumMatches(e.target.value);
     };
 
     const handleOverlapChange = (e) => {
-        console.log(e.target.value);
+        // console.log(e.target.value);
         setOverlapVal(e.target.value);
     };
 
@@ -115,7 +123,7 @@ export default function Filter(props) {
     };
 
     const handleExcludeIDChange = (e) => {
-        console.log(e.target.checked);
+        // console.log(e.target.checked);
         setExcludeID(e.target.checked);
     };
 
@@ -131,12 +139,27 @@ export default function Filter(props) {
         form.append("best_matches", best_matches);
         form.append("overlap", overlap);
         form.append("excludeS", excludeS);
-        console.log(form);
+        // console.log(form);
+        props.sendProgress(true); // querying is now in progress
         axios.post('http://localhost:5000/query', form)
             .then(function (response) {
                 console.log(response.data['message']);
-                console.log(response.data);
+                // console.log(response.data);
+                let stats = {
+                    dataMax: response.data.dataMax,
+                    dataMean: response.data.dataMean,
+                    dataMedian: response.data.dataMedian,
+                    dataMin: response.data.dataMin,
+                    dataSd: response.data.dataSd,
+                    lenMax: response.data.lenMax,
+                    lenMean: response.data.lenMean,
+                    lenMedian: response.data.lenMedian,
+                    lenMin: response.data.lenMin,
+                    lenSd: response.data.lenSd
+                };
                 setQueryResults(JSON.parse(response.data['resultJSON']));
+                setStats(stats);
+                props.sendProgress(false); // query results have been returned
             })
             .catch(function (error) {
                 console.log(error);

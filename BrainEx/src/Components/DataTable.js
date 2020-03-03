@@ -52,8 +52,8 @@ export default class DataTable extends Component {
                 queryResults: (this.props.queryResults) ? this.createTable(this.props.queryResults) : [],
                 checkboxValues: (this.props.queryResults) ? this.initializeCheckboxValues(this.props.queryResults) : []
             }, () => {
-                console.log("queryResults received by DataTable");
-                console.log(this.state.queryResults);
+                // console.log("queryResults received by DataTable");
+                // console.log(this.state.queryResults);
             });
         }
     }
@@ -80,7 +80,7 @@ export default class DataTable extends Component {
             // only update allChecked if the value has changed
             allChecked: (all_checked !== this.state.allChecked) ? all_checked : this.state.allChecked
         }, () => {
-            console.log("updated in handle checkbox change to " + this.state.allChecked);
+            // console.log("updated in handle checkbox change to " + this.state.allChecked);
             // send new true data to ChartData through Dashboard
             let filteredData = this.getTrueRows(this.state.queryResults);
             if (filteredData.length !== 0) {
@@ -98,7 +98,7 @@ export default class DataTable extends Component {
             checkboxValues: newCheckboxValues,
             allChecked: newAllChecked
         }, () => {
-            console.log("checkboxes updated in selectAll to " + this.state.allChecked);
+            // console.log("checkboxes updated in selectAll to " + this.state.allChecked);
             // send new true data to ChartData through Dashboard
             let filteredData = this.getTrueRows(this.state.queryResults);
             if (filteredData.length !== 0) {
@@ -138,7 +138,7 @@ export default class DataTable extends Component {
         });
         this.props.sendData(table);
         // this.props.sendData(colors);
-        console.log('table', table);
+        // console.log('table', table);
         return table;
     }
 
