@@ -83,12 +83,28 @@ class BuildProgressMenu extends Component {
     cancelPreprocessing = () => {
         let mode = this.state.mode;
         this.closeModal();
-        console.log("preprocessing \"cancelled\".");
+        // console.log("preprocessing \"cancelled\".");
         if (mode === "cancel") {
             // return to previous screen
             axios.post('http://localhost:5000/restart')
                 .then((response) => {
                     console.log(response);
+                    if (response.status === 200) {
+                        store.addNotification({
+                            title: "Spark session ended",
+                            message: response.data,
+                            type: "info",
+                            insert: "top",
+                            container: "bottom-left",
+                            animationIn: ["animated", "fadeIn"],
+                            animationOut: ["animated", "fadeOut"],
+                            dismiss: {
+                                duration: 5000,
+                                pauseOnHover: true,
+                                onScreen: true
+                            }
+                        });
+                    }
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -99,6 +115,22 @@ class BuildProgressMenu extends Component {
             axios.post('http://localhost:5000/restart')
                 .then((response) => {
                     console.log(response);
+                    if (response.status === 200) {
+                        store.addNotification({
+                            title: "Spark session ended",
+                            message: response.data,
+                            type: "info",
+                            insert: "top",
+                            container: "bottom-left",
+                            animationIn: ["animated", "fadeIn"],
+                            animationOut: ["animated", "fadeOut"],
+                            dismiss: {
+                                duration: 5000,
+                                pauseOnHover: true,
+                                onScreen: true
+                            }
+                        });
+                    }
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -163,7 +195,23 @@ class BuildProgressMenu extends Component {
         axios.post('http://localhost:5000/restart')
             .then((response) => {
                 console.log(response);
-                this.props.history.push(root);
+                if (response.status === 200) {
+                    store.addNotification({
+                        title: "Spark session ended",
+                        message: response.data,
+                        type: "info",
+                        insert: "top",
+                        container: "bottom-left",
+                        animationIn: ["animated", "fadeIn"],
+                        animationOut: ["animated", "fadeOut"],
+                        dismiss: {
+                            duration: 5000,
+                            pauseOnHover: true,
+                            onScreen: true
+                        }
+                    });
+                    this.props.history.push(root);
+                }
             })
             .catch(function (error) {
                 console.log(error);

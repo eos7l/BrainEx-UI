@@ -237,7 +237,7 @@ class BuildOptions extends Component {
                                 >
                                     <MenuItem value="eu">Euclidean with Dynamic Time Warping</MenuItem>
                                     <MenuItem value="ma">Manhattan with Dynamic Time Warping</MenuItem>
-                                    <MenuItem value="mi">Minkowski with Dynamic Time Warping</MenuItem>
+                                    <MenuItem value="min">Minkowski with Dynamic Time Warping</MenuItem>
                                     <MenuItem value="ch">Chebyshev with Dynamic Time Warping</MenuItem>
                                 </Select>
                             </td>

@@ -4,9 +4,11 @@ import Title from "./Title";
 import clsx from 'clsx';
 import { Range } from 'rc-slider';
 import 'rc-slider/assets/index.css';
-import { makeStyles, Button, ButtonGroup, FormControl,
+import {
+    makeStyles, Button, ButtonGroup, FormControl,
     FormGroup, FormControlLabel, Checkbox, Typography,
-    Slider, Input, Grid, InputAdornment, TextField } from "@material-ui/core";
+    Slider, Input, Grid, InputAdornment, TextField, CircularProgress
+} from "@material-ui/core";
 import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import axios from 'axios';
@@ -51,6 +53,8 @@ export default function Filter(props) {
     const [excludeID, setExcludeID] = useState(excludeSameID);
     // query results
     const [queryResults, setQueryResults] = useState(null);
+
+    const [isQueryIP, setIsQueryIP] = useState(false);
 
     useEffect(() => {
         console.log("results received");
@@ -142,6 +146,7 @@ export default function Filter(props) {
     return (
         <React.Fragment>
             <React.Fragment>
+                {/*{(isQueryIP) ? (<CircularProgress className="query_progress" color="primary"/>) : ""} /!*todo finish implementing this, make absolute overlay on page*!/*/}
                 <Title>Query Options</Title>
                 <Divider/>
                 <form className={classes.root} noValidate autoComplete="off">
