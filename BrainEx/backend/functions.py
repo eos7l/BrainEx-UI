@@ -336,9 +336,18 @@ def complete_query():
 
 @application.route('/saveDataOutput', methods=['GET', 'POST'])
 def save():
+    global querySeq
+
     if request.method == "POST":
-        print(dict(request.form))
-        return "Not implemented fully."
+        inputDict = dict(request.form)
+        inputPD = pd.DataFrame.from_dict(inputDict, orient='index')
+        id = str(querySeq.seq_id)
+        savePath = "../../Saved_Results/resultsFrom" + id
+        try:
+            inputPD.to_csv(savePath)
+            return "Saved in the Saved_Results folder."
+        except Exception as e:
+            return (str(e), 400)
 
 
 @application.route('/restart', methods=['GET', 'POST'])
