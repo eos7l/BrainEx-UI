@@ -233,7 +233,7 @@ export default class DataTable extends Component {
                         // className={classes.button}
                         startIcon={<SaveIcon/>}
                         onClick={this.saveButton}>
-                        Save
+                        Save Query Results
                     </Button>
                 </TableContainer>
                 {/*<div className={classes.seeMore}>*/}
