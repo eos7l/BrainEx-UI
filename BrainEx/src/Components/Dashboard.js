@@ -55,19 +55,25 @@ const useStyles = makeStyles(theme => ({
         overflow: 'auto',
         flexDirection: 'column',
     },
-    fixedHeight: {
+    fixedHeightChart: {
         height: 530,
+    },
+    fixedHeightTable: {
+        height: 750,
     }
 }));
 
 export default function Dashboard(props) {
     const classes = useStyles();
-    const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+    const fixedHeightChartPaper = clsx(classes.paper, classes.fixedHeightChart);
+    const fixedHeightTablePaper = clsx(classes.paper, classes.fixedHeightTable);
     const [receivedData, setDataState] = useState(() => []);
-    const [queryResults, setResults] = useState(() => {});
+    const [queryResults, setResults] = useState(() => {
+    });
     const [isQuerying, setQuerying] = useState(false);
     const [statistics, setStats] = useState({});
     const [max_matches, set_max] = useState(props.max_matches);
+    const [queryBtn, setQueryBtn] = useState(true);
 
     useEffect(() => {
         console.log(max_matches, "dashboard received matches!");
@@ -144,20 +150,19 @@ export default function Dashboard(props) {
                             </Grid>
                         </Grid>
                         <Grid item container spacing={2} direction="row" lg={8}>
-
                             <Grid item lg={12}>
                                 <LoadingOverlay
                                     active={isQuerying}
                                     spinner
                                     text='Querying in progress...'>
-                                    <Paper className={fixedHeightPaper}>
+                                    <Paper className={fixedHeightChartPaper}>
                                         <ChartData data={receivedData}/>
                                     </Paper>
                                 </LoadingOverlay>
                             </Grid>
                             <Grid item lg={12}>
                                 {/* Table */}
-                                <Paper className={fixedHeightPaper}>
+                                <Paper className={fixedHeightTablePaper}>
                                     <DataTable queryResults={queryResults} sendData={receiveData}/>
                                 </Paper>
                             </Grid>

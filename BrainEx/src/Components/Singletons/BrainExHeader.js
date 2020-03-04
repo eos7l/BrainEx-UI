@@ -18,7 +18,7 @@ class BrainExHeader extends Component {
                 <Toolbar className="info" style={appStyles.bg_color}>
                     <div className="logo"><img src={logo} alt="logo"/></div>
                     <Typography className="title" variant="h1">BrainEx</Typography>
-                    <Typography className="version" variant="h3">Version 1.0.0</Typography>
+                    <Typography className="version" variant="h3">Ver. 1.0.0</Typography>
                 </Toolbar>
             </AppBar>
         );

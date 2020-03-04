@@ -358,7 +358,7 @@ class BuildOptions extends Component {
                                     />
                                     <span className="font-weight-bold indigo-text">GB</span>
                                 </div>
-                                <div id="space_separater"></div>
+                                <div id="space-separater"></div>
                                 <div className="spark-options right-element">
                                     <InputLabel>Max Result Memory</InputLabel>
                                     <TextField

@@ -43,7 +43,6 @@ export default class MainChartViz extends React.Component {
             <div>
                 <LineChart width={750} height={460} data={this.state.lineData}
                            margin={{top: 10, right: 30, left: 0, bottom: 0}}>
-                    {/*<CartesianGrid strokeDasharray="3 3"/>*/}
                     <XAxis dataKey={firstCol} tick={true}/>
                     <YAxis/>
                     <Legend/>
