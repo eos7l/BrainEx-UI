@@ -352,18 +352,19 @@ class BuildOptions extends Component {
                                     <TextField
                                         id="driver_mem"
                                         type="number"
-                                        InputProps={{ inputProps: { min: 0 } }}
+                                        InputProps={{inputProps: {min: 0}}}
                                         value={this.state.dm_val}
                                         onChange={this.update_dm}
                                     />
                                     <span className="font-weight-bold indigo-text">GB</span>
                                 </div>
+                                <div id="space-separater"></div>
                                 <div className="spark-options right-element">
                                     <InputLabel>Max Result Memory</InputLabel>
                                     <TextField
                                         id="max_result_mem"
                                         type="number"
-                                        InputProps={{ inputProps: { min: 0 } }}
+                                        InputProps={{inputProps: {min: 0}}}
                                         value={this.state.mrm_val}
                                         onChange={this.update_mrm}
                                     />
@@ -409,7 +410,8 @@ class BuildOptions extends Component {
                                     to={select_new_dataset}>
                                     Back
                                 </Link>
-                                <Button className="start" variant="contained" color="primary" type="submit">
+                                <Button className="start btn btn-primary" variant="contained" color="primary"
+                                        type="submit">
                                     Start Preprocessing
                                 </Button>
                             </td>

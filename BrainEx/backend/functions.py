@@ -95,10 +95,11 @@ def getStoreDB():
 
 @application.route('/setFileRaw', methods=['GET', 'POST'])
 def setFileRaw():
-    global uploadPath, numFeatures
+    global uploadPath, numFeatures, fileName
 
     if request.method == 'POST':
-        uploadPath = os.path.join(application.config['UPLOAD_FOLDER_RAW'], request.form['set_data'])
+        fileName = request.form['set_data']
+        uploadPath = os.path.join(application.config['UPLOAD_FOLDER_RAW'], fileName)
         dataframe = pd.read_csv(uploadPath, delimiter=',')
         dataframe.columns = map(str.lower, dataframe.columns)
         notFeature = 0
@@ -160,11 +161,12 @@ def setFilePro():
 
 @application.route('/saveFilePro', methods=['GET', 'POST'])
 def saveFilePro():
-    global brainexDB
+    global brainexDB, fileName
 
     if request.method == 'POST':
         os.chdir(os.path.dirname(os.path.abspath(__file__)))
-        savePath = "../../Saved_Preprocessed/most_recent_data"
+        name = fileName.rsplit('.', 1)[0]
+        savePath = "../../Saved_Preprocessed/" + name + "preprocessed"
         try:
             brainexDB.save(savePath)
             shutil.make_archive(savePath, "zip", "../../Saved_Preprocessed")
@@ -336,14 +338,26 @@ def complete_query():
 
 @application.route('/saveDataOutput', methods=['GET', 'POST'])
 def save():
+    global querySeq
+
     if request.method == "POST":
-        print(dict(request.form))
-        return "Not implemented fully."
+        inputDict = dict(request.form)
+        inputPD = pd.DataFrame.from_dict(inputDict, orient='index')
+        id = str(querySeq.seq_id)
+        savePath = "../../Saved_Results/resultsFrom" + id
+        try:
+            inputPD.to_csv(savePath)
+            return "Saved in the Saved_Results folder."
+        except Exception as e:
+            return (str(e), 400)
 
 
 @application.route('/restart', methods=['GET', 'POST'])
 def stop():
     global brainexDB
 
-    brainexDB.stop()
-    return "Database has been destroyed.  You may restart."
+    try:
+        brainexDB.stop()
+        return "Database has been destroyed.  You may restart."
+    except:
+        return "You didn't have a database running."

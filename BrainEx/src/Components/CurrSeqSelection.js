@@ -29,7 +29,9 @@ class CurrSeqSelection extends Component {
         this.state = {
             channelValues: [],
             // lineColor:[],
-            file:null,
+            file: null,
+            // queryBtn:false,
+
         };
         this.updateFile = this.updateFile.bind(this);
         // this.onClickHandler = this.onClickHandler.bind(this);
@@ -86,6 +88,7 @@ class CurrSeqSelection extends Component {
                         }
                         this.setState({
                                 channelValues: data,
+                            // queryBtn:true,
                             }, () => {
                                 // console.log(response.data.sequenceJSON, 'sequenceJSON');
                             }

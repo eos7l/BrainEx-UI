@@ -223,6 +223,7 @@ export default class DataTable extends Component {
                             )}
                         </TableBody>
                     </Table>
+                    <br/>
                     <Button
                         variant="contained"
                         color="primary"

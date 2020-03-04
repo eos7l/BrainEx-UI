@@ -278,15 +278,15 @@ class BuildProgressMenu extends Component {
                                 onClick={this.goToHome}>
                                 Restart with another dataset
                             </Link>
-                            <Link
-                                className="btn btn-primary"
-                                variant="button"
-                                color="default"
-                                underline="none"
-                                component={RouterLink}
-                                to={data_exp}>
-                                Explore loaded data
-                            </Link>
+                            {/*<Link*/}
+                            {/*    className="btn btn-primary"*/}
+                            {/*    variant="button"*/}
+                            {/*    color="default"*/}
+                            {/*    underline="none"*/}
+                            {/*    component={RouterLink}*/}
+                            {/*    to={data_exp}>*/}
+                            {/*    Explore loaded data*/}
+                            {/*</Link>*/}
                             <Link
                                 className="btn btn-primary"
                                 variant="button"
@@ -305,7 +305,8 @@ class BuildProgressMenu extends Component {
                             </Link>
                         </ButtonGroup>
                         <div className="save_preprocessed">
-                            <Button className="save_data" color="primary" onClick={this.saveDataset}>Download preprocessed dataset</Button>
+                            <Button className="save_data" color="primary" variant="outlined" onClick={this.saveDataset}>Download
+                                preprocessed dataset</Button>
                             {(this.state.isDownloading) ? (
                                 <div>
                                     <br/>

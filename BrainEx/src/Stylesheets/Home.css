@@ -172,3 +172,17 @@
 .save-btn {
     margin-top: 15px;
 }
+
+#space-separater {
+    width: 50px;
+}
+
+#outlined-button-file {
+    align-content: center;
+    padding-left: 60px;
+}
+
+.stat-wrapper {
+    height: 535px;
+    padding-bottom: 0px !important;
+}

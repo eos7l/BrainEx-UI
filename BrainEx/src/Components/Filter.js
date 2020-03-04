@@ -59,16 +59,29 @@ export default function Filter(props) /*extends Component*/ {
     const [statistics, setStats] = useState({});
     const [max_matches, setMaxMatches] = useState(props.max_matches);
 
+    const [queryBtn, setQueryBtn] = useState(false);
+
     useEffect(() => {
-        // console.log("results received");
-        // console.log(queryResults);
-        props.sendResults(queryResults);
-        props.sendStats(statistics);
-        props.sendProgress(false);
-    }, [queryResults, statistics]);
+            // console.log("results received");
+            // console.log(queryResults);
+            props.sendResults(queryResults);
+            props.sendStats(statistics);
+            props.sendProgress(false);
+            // console.log(queryResults,'queryResults');
+            // function queryBtnChange(queryResults) {
+            //     if(!queryResults){
+            //         if(!queryResults){
+            //             setQueryBtn(false)
+            //         }
+            //     }
+            // }
+            //     queryBtnChange(queryResults);
+        }, [queryResults, statistics]
+    );
 
     useEffect(() => {
         setMaxMatches(props.max_matches);
+
     });
 
     /*/!*update the range values for loi range*!/
@@ -189,8 +202,8 @@ export default function Filter(props) /*extends Component*/ {
                 console.log(error);
             });
     };
-
     // render() {
+
     return (
         <React.Fragment>
             <React.Fragment>
@@ -296,11 +309,14 @@ export default function Filter(props) /*extends Component*/ {
                     <div className={classes.root}>
                         <ButtonGroup>
                             <Button type="submit" size="medium" variant="contained" color="primary"
+                                    classname="btn btn-primary" disabled={queryBtn}
                                     onClick={handleQuery}>
-                                Submit Query
+                                Start Query
                             </Button>
-                            <Button size="medium" variant="contained" color="default" onClick={handleClearInput}>
-                                Clear Options {/*todo dialog letting user know that this will erase the table and graph*/}
+                            <Button size="medium" variant="contained" color="default" disabled={queryBtn}
+                                    onClick={handleClearInput}>
+                                Clear
+                                Options {/*todo dialog letting user know that this will erase the table and graph*/}
                             </Button>
                         </ButtonGroup>
                     </div>
