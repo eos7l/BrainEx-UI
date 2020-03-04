@@ -9,7 +9,7 @@ conf = SparkConf(). \
 sc = SparkContext(conf=conf)
 
 # create gxdb from a csv file
-data_file = 'ItalyPower.csv'
+data_file = '../example_files/ItalyPower.csv'
 db_path = 'test_db'
 
 mydb = gxdb.from_csv(data_file, sc=sc, _rows_to_consider=10, feature_num=2)
