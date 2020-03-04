@@ -73,7 +73,7 @@ export default function Dashboard(props) {
     const [isQuerying, setQuerying] = useState(false);
     const [statistics, setStats] = useState({});
     const [max_matches, set_max] = useState(props.max_matches);
-    const [queryBtn, setQueryBtn] = useState(true);
+    // const [queryBtn, setQueryBtn] = useState(true);
 
     useEffect(() => {
         console.log(max_matches, "dashboard received matches!");

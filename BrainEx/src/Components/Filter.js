@@ -59,7 +59,7 @@ export default function Filter(props) /*extends Component*/ {
     const [statistics, setStats] = useState({});
     const [max_matches, setMaxMatches] = useState(props.max_matches);
 
-    const [queryBtn, setQueryBtn] = useState(true);
+    const [queryBtn, setQueryBtn] = useState(false);
 
     useEffect(() => {
             // console.log("results received");
