@@ -58,13 +58,13 @@ Otherwise, execute the following commands approximate commands on your machine:
 * To set up the backend:
    1. `venv/scripts/activate` (only if using virtual environment)
    1. `python -m pip install --user requirements.txt`
-   1. `cd Brainex/backend`  (when you are in the BrainEx-UI root directory)
+   1. `cd BrainEx/backend`  (when you are in the BrainEx-UI root directory)
    1. `set FLASK_APP=functions.py`
    1. `flask run`
       * This may need to be replaced by ‘python -m flask run’ if your Python Path is not configured properly.
 
 * To set up the frontend (in a separate terminal/command window):
-   1. `cd Brainex` (when you are in the BrainEx-UI root directory)
+   1. `cd BrainEx` (when you are in the BrainEx-UI root directory)
    1. `npm install`
    1. `npm start`
 
