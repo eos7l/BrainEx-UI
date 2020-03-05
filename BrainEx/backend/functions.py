@@ -16,11 +16,13 @@ import zipfile
 
 UPLOAD_FOLDER_RAW = os.path.join(os.path.dirname(os.path.abspath(__file__)), "uploads\\raw")
 UPLOAD_FOLDER_PRO = os.path.join(os.path.dirname(os.path.abspath(__file__)), "uploads\\preprocessed")
+UPLOAD_FOLDER_SEQ =  os.path.join(os.path.dirname(os.path.abspath(__file__)), "uploads\\sequences")
 
 application = Flask(__name__)
 CORS(application)
 application.config['UPLOAD_FOLDER_RAW'] = UPLOAD_FOLDER_RAW
 application.config['UPLOAD_FOLDER_PRO'] = UPLOAD_FOLDER_PRO
+application.config['UPLOAD_FOLDER_SEQ'] = UPLOAD_FOLDER_SEQ
 
 uploadPath = None
 brainexDB = None
@@ -66,6 +68,7 @@ def getStoreCSV():
             if 'uploaded_data' + str(i) not in request.files:
                 return ("File not found.", 400)
             csv = request.files['uploaded_data' + str(i)]
+            print(csv.filename)
             if csv.filename == '':
                 return ("File not found", 400)
             if csv and is_csv(csv.filename):
@@ -238,14 +241,17 @@ def uploadSequence():
         if 'sequence_file' not in request.files:
             return ("File not found.", 400)
         csv = request.files['sequence_file']
+        print(csv.filename)
         if csv.filename == '':
             return ("File not found", 400)
         if csv and is_csv(csv.filename):
             # Check to make sure there's only one line there
-            with open(csv.filename) as f:
+            toSave = os.path.join(application.config['UPLOAD_FOLDER_SEQ'], csv.filename)
+            csv.save(toSave)
+            with open(toSave) as f:
                 numLines = sum(1 for line in f)
             if numLines == 1:
-                with open(csv.filename) as f:
+                with open(toSave) as f:
                     queryLine = f.readline()
                     queryLine = queryLine.rstrip().split(',')
                     queryArr = queryLine[numFeatures:]
