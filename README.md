@@ -230,6 +230,7 @@ The “Query Results” plot includes the sequences toggled to be shown in the g
 
 1. We recommend using this application in fullscreen mode for the best results and experience.
 1. Refreshing the page may cause the application to lose track of some relevant variables.  If you have refreshed by mistake, return to the beginning of the pipeline through the proper channels (not through the browser back button).
+1. If a change is made to the Genex package that changes names of functions, parameters, and/or return values, this application will require refactoring in order to function as expected.
 
 ## Using the application
 
