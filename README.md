@@ -8,7 +8,7 @@ Note: This app was developed on Windows 10 OS, but additional directions for Mac
 
 ### Required software
 
-It is necessary for the machine that Brainex is running on to have the following software installed and configured:
+It is necessary for the machine that BrainEx is running on to have the following software installed and configured:
 1. [Python](https://www.python.org/downloads/) 3.6 or 3.7 (Python 3.8 has some known issues with packages used by this application and the backend requires 3.6 or greater) with pip included
    1. Add the path to the python.exe and the Scripts folder to PATH
       1. For more information on how to add environment variables on Windows, Linux and MacOS, refer to [this link](https://www.schrodinger.com/kb/1842)
