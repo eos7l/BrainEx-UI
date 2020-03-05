@@ -135,7 +135,7 @@ This is the initial/main page of the app. It has 3 main elements.
 * If the user clicks on a preprocessed file from the left side of the screen, a dialog will appear asking the user if they wish to proceed with this dataset, and to verify the Spark context parameters (number of workers, driver memory, max result memory). The user will then be brought to the “Find Similar Sequences” page upon confirmation of the parameters.
 * On the right hand side of the screen, there is a brief description of the app and a button to instead choose a new, raw dataset. This will bring the user to the next screen, “Select a new dataset”
 
-#### Select a new datase
+#### Select a new dataset
 
 This page is for selecting a new, raw dataset rather than a preprocessed one. Users may also upload new datasets to their local copy of the application.
 
