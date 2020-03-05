@@ -257,7 +257,7 @@ def uploadSequence():
                     queryArr = queryLine[numFeatures:]
                     queryArr = [float(i) for i in queryArr]
                     queryArr = np.asarray(queryArr)
-                    querySeq = Sequence(seq_id=queryLine[:numFeatures], start=1, end=24, data=queryArr)
+                    querySeq = Sequence(seq_id=queryLine[:numFeatures], start=1, end=len(queryArr)-numFeatures, data=queryArr)
                 length = queryArr.size
                 pandasQ = pd.DataFrame({"query_seq": queryArr})
                 timeStamps = []
